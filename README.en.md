@@ -6,7 +6,7 @@ A Windows x64 desktop companion for AI usage, Git history, notes and reminders. 
 
 ## Start
 
-Run `release/DeskMate-0.3.0-win32-x64/DeskMate.exe`. Keep the entire folder together. If an older version is running, choose **Quit DeskMate** in its tray menu first. The new version uses the same local data directory and migrates existing notes and reminders automatically.
+Run `release/DeskMate-0.4.0-win32-x64/DeskMate.exe`. Keep the entire folder together. If an older version is running, choose **Quit DeskMate** in its tray menu first. The new version uses the same local data directory and migrates existing notes and reminders automatically.
 
 For source builds, install Node.js 22.12+, npm and Git:
 
@@ -16,6 +16,15 @@ npm.cmd start
 ```
 
 Click the pet to open the panel; right-click it or the tray icon to switch agents. Use the small drag handle to move it. Closing the panel keeps the app running. Use the tray menu to quit.
+
+## Pet quota display
+
+Choose a mode in **Appearance & settings → Pet quota display**, or from the pet's right-click menu:
+
+- **Always visible** (default): a compact 196-pixel strip with a remaining percentage and progress bar for each window. Low quotas use warm colors.
+- **Show on hover**: hover over the pet to reveal a floating card. Move onto the card and click to open usage details; moving away hides it. Keyboard focus also reveals it, and Escape dismisses it.
+
+The preference applies immediately and persists across restarts. Both modes prioritize the five-hour window; reset credits remain in the usage panel only. Hidden cards and transparent window padding allow clicks to pass through to the desktop.
 
 ## Languages
 
@@ -103,9 +112,9 @@ npm.cmd ci
 npm.cmd run dist
 ```
 
-Output: `release/installers/DeskMate-Setup-0.3.0-x64.exe`. Every `dist` run packages the current source; no separate `package` step is needed. The installer supports English, Chinese and Japanese, installs for the current user without administrator access, lets you choose a directory, and creates desktop/Start Menu shortcuts. It does not launch the app automatically. Uninstall from Windows Installed Apps; user data is retained. Rebuilding the same version replaces its installer artifact.
+Output: `release/installers/DeskMate-Setup-0.4.0-x64.exe`. Every `dist` run packages the current source; no separate `package` step is needed. The installer supports English, Chinese and Japanese, installs for the current user without administrator access, lets you choose a directory, and creates desktop/Start Menu shortcuts. It does not launch the app automatically. Uninstall from Windows Installed Apps; user data is retained. Rebuilding the same version replaces its installer artifact.
 
-For a portable folder, run `npm.cmd run package`: output is `release/DeskMate-0.3.0-win32-x64/`. Existing portable output is protected; choose another `DESKMATE_BUILD_NAME` to rebuild. Both editions share user data; quit one before opening the other.
+For a portable folder, run `npm.cmd run package`: output is `release/DeskMate-0.4.0-win32-x64/`. Existing portable output is protected; choose another `DESKMATE_BUILD_NAME` to rebuild. Both editions share user data; quit one before opening the other.
 
 Configuration: `electron-builder.cjs`; workflow: `scripts/installer.cjs`; original generated icon: `scripts/icon.cjs`. Version comes from `package.json`. Uses electron-builder's NSIS target and never publishes automatically. The installer is unsigned and Windows may show an unknown publisher; configure code signing separately before public distribution. The default artwork's CC BY-NC 4.0 noncommercial restriction also applies to the installer.
 
@@ -116,6 +125,7 @@ New users: `%APPDATA%/DeskMate/`. If the new directory has no saved data and `%A
 ```powershell
 npm.cmd test
 npm.cmd run test:ui
+npm.cmd run test:pet    # Pet display modes, interactions and persistence
 npm.cmd run package
 ```
 

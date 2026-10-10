@@ -6,7 +6,7 @@
 
 ## 运行
 
-打包版：打开 `release/DeskMate-0.3.0-win32-x64/DeskMate.exe`，整个目录需一起保留。如果旧版正在运行，请先从旧版托盘「退出桌伴」，再启动新版。沿用原数据目录，旧便签和提醒会自动迁移。
+打包版：打开 `release/DeskMate-0.4.0-win32-x64/DeskMate.exe`，整个目录需一起保留。如果旧版正在运行，请先从旧版托盘「退出桌伴」，再启动新版。沿用原数据目录，旧便签和提醒会自动迁移。
 
 源码版需要 Node.js 22.12+、npm 和 Git：
 
@@ -26,6 +26,15 @@ npm.cmd start
 - **动画形象**：默认白发龙娘，每个 Agent 可绑定独立动画包，支持 GIF/WebP/PNG/APNG，缺少状态回退待机。
 
 接口来源：[Codex App Server](https://learn.chatgpt.com/docs/app-server)、[Claude Code 状态行](https://code.claude.com/docs/en/statusline)。
+
+## 桌宠额度展示
+
+在「形象与设置 → 桌宠额度展示」或桌宠右键菜单中选择：
+
+- **持续显示**（默认）：196 像素宽的紧凑额度条，每个窗口显示剩余百分比和进度条，低额度使用暖色提示。
+- **鼠标悬停显示**：移到桌宠上展开浮层；可以继续移入浮层并点击查看用量，移开后自动收起。键盘聚焦也可展开，Esc 收起。
+
+设置立即生效并在重启后保留。两种模式都优先显示 5 小时窗口，重置卡仍只在用量面板展示。浮层隐藏区域及窗口透明留白可穿透点击，不遮挡桌面操作。
 
 ## 三语与更新日志
 
@@ -99,21 +108,22 @@ npm.cmd ci
 npm.cmd run dist
 ```
 
-产物：`release/installers/DeskMate-Setup-0.3.0-x64.exe`。`dist` 每次从当前源码重新打包，无需先运行 `package`。安装程序支持中文、英语、日语，按当前用户安装，无需管理员权限，可以选择安装目录，并创建桌面与开始菜单快捷方式。安装完不会自动启动；通过快捷方式打开即可。可在 Windows「已安装的应用」中卸载，卸载保留用户数据。同版本重复构建会更新对应安装包文件。
+产物：`release/installers/DeskMate-Setup-0.4.0-x64.exe`。`dist` 每次从当前源码重新打包，无需先运行 `package`。安装程序支持中文、英语、日语，按当前用户安装，无需管理员权限，可以选择安装目录，并创建桌面与开始菜单快捷方式。安装完不会自动启动；通过快捷方式打开即可。可在 Windows「已安装的应用」中卸载，卸载保留用户数据。同版本重复构建会更新对应安装包文件。
 
-仅需要免安装目录时运行 `npm.cmd run package`，输出 `release/DeskMate-0.3.0-win32-x64/`。该命令不覆盖已有目录，重新生成可指定 `DESKMATE_BUILD_NAME` 为新的目录名。安装版与免安装版共用同一用户数据目录，切换版本前先退出另一版。
+仅需要免安装目录时运行 `npm.cmd run package`，输出 `release/DeskMate-0.4.0-win32-x64/`。该命令不覆盖已有目录，重新生成可指定 `DESKMATE_BUILD_NAME` 为新的目录名。安装版与免安装版共用同一用户数据目录，切换版本前先退出另一版。
 
 构建配置：`electron-builder.cjs`；流程：`scripts/installer.cjs`；图标由 `scripts/icon.cjs` 原创生成。版本号统一取自 `package.json`。使用 electron-builder 的 NSIS 目标；源码与产物不会自动发布。当前为未签名安装包，Windows 可能显示未知发布者，正式分发前可另行配置代码签名。默认角色的 CC BY-NC 4.0 非商业限制仍适用于安装包。
 
 ## 本地数据与验证
 
-新用户默认数据目录为 `%APPDATA%/DeskMate/`；如果检测到旧版 `%APPDATA%/Longling PC Assistant/assistant.json` 且新目录尚无数据，会继续使用旧目录以保留便签、提醒、设置与动画资源（不移动或删除原数据）。`DESKMATE_DATA_DIR` 优先，旧变量 `LONGLING_DATA_DIR` 仍兼容。数据文件，设置中可打开。便签、提醒和配置存入 `assistant.json`，保留上一份 `.bak`，损坏时尝试恢复并保留损坏副本。提交索引存入 `git-*.json`，自定义角色位于 `skins/`，更新缓存为 `release-*.json`。备份时退出程序并复制整个目录。环境变量 `DESKMATE_DATA_DIR` 可指定隔离目录。
+新用户默认数据目录为 `%APPDATA%/DeskMate/`；如果检测到旧版 `%APPDATA%/Longling PC Assistant/assistant.json` 且新目录尚无数据，会继续使用旧目录以保留便签、提醒、设置与动画资源（不移动或删除原数据）。`DESKMATE_DATA_DIR` 优先，旧变量 `LONGLING_DATA_DIR` 仍兼容。数据目录可在设置中打开。便签、提醒和配置存入 `assistant.json`，保留上一份 `.bak`，损坏时尝试恢复并保留损坏副本。提交索引存入 `git-*.json`，自定义角色位于 `skins/`，更新缓存为 `release-*.json`。备份时退出程序并复制整个目录。环境变量 `DESKMATE_DATA_DIR` 可指定隔离目录。
 
 提醒先写入持久状态再发通知，以避免重复；极端情况下若进程恰在两步间崩溃，可从未读列表找回。界面使用隔离 preload 与受限 IPC，不发送便签、Git 历史或提醒到服务器。
 
 ```powershell
 npm.cmd test           # 功能测试，含真实临时 Git 仓库
 npm.cmd run test:ui    # 隔离数据的 Electron 流程测试与截图
+npm.cmd run test:pet    # 桌宠展示模式、交互和持久化
 npm.cmd run package    # Windows x64 可运行目录
 ```
 

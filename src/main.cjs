@@ -51,6 +51,7 @@ function petMenu() {
   return Menu.buildFromTemplate([
     { label: tr('openApp'), click: () => openPanel() },
     { label: tr('switchAgent'), submenu: AGENTS.map(a => ({ label: a.name, type: 'radio', checked: store.state.settings.agent === a.id, click: () => { store.update(s => { s.settings.agent = a.id; }); tray.setContextMenu(petMenu()); changed(); refreshUsage(); } })) },
+    { label: tr('petQuotaDisplay'), submenu: ['always', 'hover'].map(mode => ({ label: tr(mode === 'hover' ? 'quotaHover' : 'quotaAlways'), type: 'radio', checked: (store.state.settings.petQuotaDisplay === 'hover' ? 'hover' : 'always') === mode, click: () => handle('settings', { petQuotaDisplay: mode }) })) },
     { label: tr('agenda'), click: () => openPanel('agenda') },
     { label: tr('settings'), click: () => openPanel('settings') }, { type: 'separator' },
     { label: tr('showPet'), click: () => pet.show() }, { label: tr('hidePet'), click: () => pet.hide() },
@@ -103,6 +104,10 @@ async function handle(action, value = {}) {
         if (value.language !== undefined) { if (!locales.includes(value.language)) throw new Error('invalidLanguage'); s.settings.language = value.language; }
         if (value.agent !== undefined) { if (!AGENTS.some(a => a.id === value.agent)) throw new Error('未知 Agent'); s.settings.agent = value.agent; }
         if (value.alwaysOnTop !== undefined) s.settings.alwaysOnTop = Boolean(value.alwaysOnTop);
+        if (value.petQuotaDisplay !== undefined) {
+          if (!['always', 'hover'].includes(value.petQuotaDisplay)) throw new Error('invalidQuotaDisplay');
+          s.settings.petQuotaDisplay = value.petQuotaDisplay;
+        }
         if (value.skinId !== undefined) {
           if (!allSkins(store).some(a => a.id === value.skinId)) throw new Error('形象不存在');
           const agent = value.skinAgent || s.settings.agent;
@@ -161,12 +166,20 @@ app.whenReady().then(() => {
   const display = saved ? screen.getDisplayNearestPoint(saved).workArea : bounds;
   const pos = saved ? { x: Math.min(Math.max(saved.x, display.x), display.x + display.width - 260), y: Math.min(Math.max(saved.y, display.y), display.y + display.height - 360) } : { x: bounds.x + bounds.width - 260, y: bounds.y + bounds.height - 390 };
   pet = new BrowserWindow({ ...pos, width: 260, height: 360, frame: false, transparent: true, resizable: false, skipTaskbar: true, alwaysOnTop: store.state.settings.alwaysOnTop, hasShadow: false, show: false, webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true, backgroundThrottling: false } });
-  secureWindow(pet); pet.loadFile(path.join(renderer, 'pet.html')); pet.once('ready-to-show', () => pet.show());
+  secureWindow(pet); pet.loadFile(path.join(renderer, 'pet.html')); pet.once('ready-to-show', () => { pet.setIgnoreMouseEvents(true, { forward: true }); pet.show(); });
   pet.on('moved', () => { clearTimeout(positionTimer); positionTimer = setTimeout(() => { if (quitting || pet.isDestroyed()) return; const [x, y] = pet.getPosition(); store.update(s => { s.settings.position = { x, y }; }); }, 600); });
   tray = new Tray(trayIcon()); tray.setToolTip(tr('appTitle')); tray.setContextMenu(petMenu()); tray.on('click', () => openPanel());
   ipcMain.handle('assistant:call', async (event, action, value) => {
     if (![pet?.webContents, panel?.webContents].includes(event.sender) || event.senderFrame !== event.sender.mainFrame) return { error: '不允许的请求' };
-    try { return { result: await handle(action, value) }; } catch (e) { return { error: e.message }; }
+    try {
+      if (action === 'pet.pointer') {
+        if (event.sender !== pet.webContents || typeof value?.interactive !== 'boolean') throw new Error('不允许的请求');
+        // Transparent padding and the hidden hover card must not block the desktop.
+        pet.setIgnoreMouseEvents(!value.interactive, { forward: true });
+        return { result: true };
+      }
+      return { result: await handle(action, value) };
+    } catch (e) { return { error: e.message }; }
   });
   openPanel();
   for (const a of AGENTS) updates.read(a.id).catch(() => {});

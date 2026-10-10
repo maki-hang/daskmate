@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' file: data:; style-src 'self'; script-src 'self'"><title>桌伴桌宠</title><link rel="stylesheet" href="pet.css"></head><body>
-<div id="bubble" hidden></div><div class="drag" title="拖动到喜欢的位置">⠿</div>
-<button id="pet" title="点击打开桌伴，右键切换 Agent"><img id="character" alt="白发龙娘"></button>
-<button id="status" title="查看当前 Agent 用量"><span id="agent">Codex</span><span id="quota">读取中…</span></button>
+<button id="bubble" data-interactive hidden></button><div class="drag" data-interactive title="拖动到喜欢的位置">⠿</div>
+<button id="pet" data-interactive aria-controls="status"><img id="character" alt="白发龙娘"></button>
+<button id="status" data-interactive><span class="status-heading"><span class="agent-identity"><span class="status-dot" aria-hidden="true"></span><span id="agent">Codex</span></span><span id="remaining-label"></span><span class="status-arrow" aria-hidden="true">↗</span></span><span id="quota">读取中…</span></button>
 <script src="i18n.js"></script><script src="pet.js"></script></body></html>

@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { randomUUID } = require('node:crypto');
 
-const defaults = () => ({ version: 1, settings: { agent: 'codex', skins: {}, alwaysOnTop: true, launchAtLogin: false }, notes: [], reminders: [], repositories: [], skins: [] });
+const defaults = () => ({ version: 1, settings: { agent: 'codex', skins: {}, alwaysOnTop: true, launchAtLogin: false, petQuotaDisplay: 'always' }, notes: [], reminders: [], repositories: [], skins: [] });
 class Store {
   constructor(directory) {
     this.directory = directory;
