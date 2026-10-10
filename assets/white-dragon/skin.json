@@ -1,0 +1,14 @@
+{
+  "name": "ChatGPT 白发龙娘",
+  "author": "fywdy / chatgpt-chibi-pets",
+  "source": "https://github.com/fywdy/chatgpt-chibi-pets/tree/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2/chatgpt-white-dragon-chibi-v5",
+  "license": "CC BY-NC 4.0",
+  "states": {
+    "idle": "idle.webp",
+    "happy": "waving.webp",
+    "attention": "waiting.webp",
+    "error": "failed.webp",
+    "reminder": "jumping.webp",
+    "working": "review.webp"
+  }
+}
