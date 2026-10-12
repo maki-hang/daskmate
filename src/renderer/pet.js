@@ -75,7 +75,7 @@ function render() {
   const skin = state.skins.find(s => s.id === state.settings.skins[agent]) || state.skins[0];
   const source = skin.states[anim] || skin.states.idle;
   if ($('character').src !== source) $('character').src = source;
-  $('character').alt = tr('petAlt');
+  $('character').alt = skin.names?.[lang()] || skin.name;
   $('pet').ariaLabel = tr('petInteraction');
   const agentName = state.agents.find(a => a.id === agent).name;
   $('agent').textContent = agentName;

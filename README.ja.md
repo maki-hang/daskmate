@@ -6,7 +6,7 @@ AI 使用量、Git 履歴、メモ、リマインダーをまとめた Windows x
 
 ## 起動
 
-`release/DeskMate-0.4.1-win32-x64/DeskMate.exe` を実行してください。フォルダー内のファイルは一緒に保管してください。旧版が起動中の場合は、先にトレイの「デスクメイトを終了」を選びます。データフォルダーは共通で、既存のメモと通知は自動移行されます。
+`release/DeskMate-0.5.0-win32-x64/DeskMate.exe` を実行してください。フォルダー内のファイルは一緒に保管してください。旧版が起動中の場合は、先にトレイの「デスクメイトを終了」を選びます。データフォルダーは共通で、既存のメモと通知は自動移行されます。
 
 ソースから実行する場合は Node.js 22.12+、npm、Git が必要です。
 
@@ -75,18 +75,28 @@ Agent を選択し、設定でローカルの `skin.json` を読み込みます�
 
 必須は `idle` のみ。`error`、`working` も使用できます。GIF/WebP/PNG/APNG は素材フォルダー内に置き、1 ファイル 20 MB 以下にしてください。読み込み時にコピーし、不足する状態は待機表示で代用します。Codex のスプライト ZIP は直接読み込めません。
 
-## 既定の素材とライセンス
+## 内蔵素材とライセンス
 
-**ChatGPT 白髪ドラゴン娘のちびキャラ**。作者・公開者は **fywdy / chatgpt-chibi-pets** です。OpenAI と提携していない非公式ファンアートです。
+**fywdy / chatgpt-chibi-pets** の **全 8 キャラクター** を収録しています。ブランドとは提携していない非公式ファンアートです。初期設定は白髪のドラゴン娘のままで、既存の選択と追加した素材も保持します。
 
-- [元リポジトリ](https://github.com/fywdy/chatgpt-chibi-pets)。
-- 固定バージョン：[`d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2`](https://github.com/fywdy/chatgpt-chibi-pets/tree/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2/chatgpt-white-dragon-chibi-v5)。
-- 元のパス：`chatgpt-white-dragon-chibi-v5/qa/previews/*.webp`。
-- 未改変の 6 種：`idle`、`waving`、`waiting`、`failed`、`jumping`、`review`。
-- 美術素材は **CC BY-NC 4.0**。署名と声明を保持し、**非商用利用のみ**。元のキャラクターやブランドの権利を付与するものではありません。
-- ローカル：`assets/white-dragon/`。元の条件は `UPSTREAM-LICENSE.txt` と `UPSTREAM-NOTICE.md` に保存。
+| キャラクター | ローカル素材 |
+| --- | --- |
+| ChatGPT・白髪のドラゴン娘 | `assets/white-dragon/` |
+| Claude・オレンジの学者娘 | `assets/orange-scholar/` |
+| DeepSeek・青いクジラメイド | `assets/whale-maid/` |
+| Gemini・星の猫娘 | `assets/star-cat/` |
+| Grok・黒金のゴシック娘 | `assets/gothic/` |
+| Kimi・月影のメイド | `assets/moon-maid/` |
+| Qwen・青髪の学者娘 | `assets/blue-scholar/` |
+| Zhipu・サンゴ色の技術娘 | `assets/coral-tech/` |
 
-アニメーションはペットの反応、通知、残量の注意を示し、Agent の作業状況をリアルタイムに表すものではありません。
+使用量ページで Agent を選び、「外観と設定」でキャラクターをクリックすると設定できます。Agent の切り替えや再起動後も選択を保持します。内蔵キャラクター名は中国語・英語・日本語に対応します。すべてのキャラクターを対応済みの Codex、Claude Code に設定できます。素材と使用量の連携は別々に管理します。
+
+出典：[fywdy/chatgpt-chibi-pets](https://github.com/fywdy/chatgpt-chibi-pets)。固定バージョン：[`d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2`](https://github.com/fywdy/chatgpt-chibi-pets/tree/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2)。各 `skin.json` に元のキャラクターディレクトリを記載し、アニメーションはその `qa/previews/` から取得しています。`assets/catalog.json` に一覧、`assets/upstream-lock.json` に元のパス・サイズ・SHA-256 を記録しています。
+
+各キャラクターに未改変の透明 WebP を 6 種、合計 48 ファイル収録：`idle`、`waving`、`waiting`、`failed`、`jumping`、`review`。待機・反応・注意・エラー・通知・作業の状態に対応します。Agent の作業状況をリアルタイムに表すものではありません。
+
+美術素材は **CC BY-NC 4.0**、**非商用利用のみ**。署名と声明を保持し、元のキャラクターやブランドの権利を付与するものではありません。各素材フォルダーに完全な `UPSTREAM-LICENSE.txt` と `UPSTREAM-NOTICE.md` を同梱し、インストーラーにも含めています。
 
 ## Claude の残量連携（任意）
 
@@ -112,11 +122,11 @@ npm.cmd ci
 npm.cmd run dist
 ```
 
-出力は `release/installers/DeskMate-Setup-0.4.1-x64.exe`。`dist` は毎回現在のソースから作成するため、先に `package` を実行する必要はありません。中国語・英語・日本語に対応し、管理者権限不要のユーザー単位インストール、インストール先の選択、デスクトップとスタートメニューのショートカット作成が可能です。完了後に自動起動しません。Windows の「インストールされているアプリ」からアンインストールでき、ユーザーデータは保持されます。同じバージョンを再ビルドすると、そのインストーラーを更新します。
+出力は `release/installers/DeskMate-Setup-0.5.0-x64.exe`。`dist` は毎回現在のソースから作成するため、先に `package` を実行する必要はありません。中国語・英語・日本語に対応し、管理者権限不要のユーザー単位インストール、インストール先の選択、デスクトップとスタートメニューのショートカット作成が可能です。完了後に自動起動しません。Windows の「インストールされているアプリ」からアンインストールでき、ユーザーデータは保持されます。同じバージョンを再ビルドすると、そのインストーラーを更新します。
 
-ポータブル版のみ必要な場合は `npm.cmd run package` を実行します。出力先は `release/DeskMate-0.4.1-win32-x64/`。既存の出力先は上書きせず、再作成には別の `DESKMATE_BUILD_NAME` を指定できます。両版はデータを共有するため、切り替える前に起動中の版を終了してください。
+ポータブル版のみ必要な場合は `npm.cmd run package` を実行します。出力先は `release/DeskMate-0.5.0-win32-x64/`。既存の出力先は上書きせず、再作成には別の `DESKMATE_BUILD_NAME` を指定できます。両版はデータを共有するため、切り替える前に起動中の版を終了してください。
 
-設定は `electron-builder.cjs`、処理は `scripts/installer.cjs`、オリジナルのアイコン生成は `scripts/icon.cjs`。バージョンは `package.json` に従います。electron-builder の NSIS を使用し、自動公開はしません。未署名のため Windows に不明な発行元と表示される場合があります。公開配布の前に署名を別途設定できます。既定素材の CC BY-NC 4.0 非商用条件はインストーラーにも適用されます。
+設定は `electron-builder.cjs`、処理は `scripts/installer.cjs`、オリジナルのアイコン生成は `scripts/icon.cjs`。バージョンは `package.json` に従います。electron-builder の NSIS を使用し、自動公開はしません。未署名のため Windows に不明な発行元と表示される場合があります。公開配布の前に署名を別途設定できます。内蔵素材の CC BY-NC 4.0 非商用条件はインストーラーにも適用されます。
 
 ## データ・開発・検証
 
@@ -124,6 +134,7 @@ npm.cmd run dist
 
 ```powershell
 npm.cmd test
+npm.cmd run test:skins # Built-in artwork, languages and per-agent bindings
 npm.cmd run test:ui
 npm.cmd run test:pet    # ペット表示・操作・設定の保持
 npm.cmd run package

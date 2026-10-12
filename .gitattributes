@@ -1,0 +1,4 @@
+# Preserve upstream bytes so provenance hashes are stable on every platform.
+assets/**/UPSTREAM-LICENSE.txt -text
+assets/**/UPSTREAM-NOTICE.md -text
+assets/**/*.webp binary

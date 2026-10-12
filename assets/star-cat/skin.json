@@ -1,0 +1,19 @@
+{
+  "name": "Gemini 星猫娘",
+  "names": {
+    "zh-CN": "Gemini 星猫娘",
+    "en": "Gemini · Star cat girl",
+    "ja": "Gemini・星の猫娘"
+  },
+  "author": "fywdy / chatgpt-chibi-pets",
+  "source": "https://github.com/fywdy/chatgpt-chibi-pets/tree/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2/gemini-star-cat-chibi-v1",
+  "license": "CC BY-NC 4.0",
+  "states": {
+    "idle": "idle.webp",
+    "happy": "waving.webp",
+    "attention": "waiting.webp",
+    "error": "failed.webp",
+    "reminder": "jumping.webp",
+    "working": "review.webp"
+  }
+}

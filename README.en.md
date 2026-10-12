@@ -6,7 +6,7 @@ A Windows x64 desktop companion for AI usage, Git history, notes and reminders. 
 
 ## Start
 
-Run `release/DeskMate-0.4.1-win32-x64/DeskMate.exe`. Keep the entire folder together. If an older version is running, choose **Quit DeskMate** in its tray menu first. The new version uses the same local data directory and migrates existing notes and reminders automatically.
+Run `release/DeskMate-0.5.0-win32-x64/DeskMate.exe`. Keep the entire folder together. If an older version is running, choose **Quit DeskMate** in its tray menu first. The new version uses the same local data directory and migrates existing notes and reminders automatically.
 
 For source builds, install Node.js 22.12+, npm and Git:
 
@@ -75,18 +75,28 @@ Select an agent, then import a local `skin.json` in Settings:
 
 Only `idle` is required; `error` and `working` are also supported. GIF/WebP/PNG/APNG files must be inside the pack folder and each at most 20 MB. Import copies the files. Missing states fall back to idle. Codex sprite-sheet ZIP files are not directly supported.
 
-## Default artwork and license
+## Built-in artwork and license
 
-**ChatGPT white-haired dragon girl chibi**, by **fywdy / chatgpt-chibi-pets**, is unofficial fan art, not affiliated with OpenAI.
+All **8 characters** from **fywdy / chatgpt-chibi-pets** are included. They are unofficial fan art with no brand affiliation. The white dragon girl remains the default; existing bindings and imported packs are preserved.
 
-- Repository: [fywdy/chatgpt-chibi-pets](https://github.com/fywdy/chatgpt-chibi-pets).
-- Pinned revision: [`d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2`](https://github.com/fywdy/chatgpt-chibi-pets/tree/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2/chatgpt-white-dragon-chibi-v5).
-- Original path: `chatgpt-white-dragon-chibi-v5/qa/previews/*.webp`.
-- Six unmodified animations: `idle`, `waving`, `waiting`, `failed`, `jumping`, `review`.
-- Artwork license: **CC BY-NC 4.0**. Attribution and notices must be retained; **noncommercial use only**. This does not grant rights to underlying characters or brands.
-- Local files and original notices: `assets/white-dragon/`, `UPSTREAM-LICENSE.txt`, `UPSTREAM-NOTICE.md`.
+| Character | Local pack |
+| --- | --- |
+| ChatGPT · White dragon girl | `assets/white-dragon/` |
+| Claude · Orange scholar | `assets/orange-scholar/` |
+| DeepSeek · Whale maid | `assets/whale-maid/` |
+| Gemini · Star cat girl | `assets/star-cat/` |
+| Grok · Gothic girl | `assets/gothic/` |
+| Kimi · Moon maid | `assets/moon-maid/` |
+| Qwen · Blue-haired scholar | `assets/blue-scholar/` |
+| Zhipu · Coral tech girl | `assets/coral-tech/` |
 
-Animations indicate pet interactions, reminders and quota attention; they do not claim to reflect live agent work status.
+Choose an agent on the usage page, then click a character in **Appearance & settings**. Each agent keeps its own choice across switches and restarts. Built-in names follow the selected Chinese, English or Japanese language. Any character can be used with the supported Codex and Claude Code agents; artwork and usage integrations are managed separately.
+
+Source: [fywdy/chatgpt-chibi-pets](https://github.com/fywdy/chatgpt-chibi-pets), pinned to [`d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2`](https://github.com/fywdy/chatgpt-chibi-pets/tree/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2). Each pack's `skin.json` links to its original character directory; animations come from its `qa/previews/` folder. `assets/catalog.json` lists the packs and `assets/upstream-lock.json` records source paths, sizes and SHA-256 checksums.
+
+Each pack includes six unmodified transparent WebP animations: `idle`, `waving`, `waiting`, `failed`, `jumping` and `review` (48 files total). They map to idle, interaction, attention, error, reminder and working states. Animations do not claim to reflect live agent work status.
+
+Artwork license: **CC BY-NC 4.0**, **noncommercial use only**, retaining attribution and notices. This does not grant rights to underlying characters or brands. Each local pack includes the full `UPSTREAM-LICENSE.txt` and `UPSTREAM-NOTICE.md`, also included in packaged builds.
 
 ## Claude quota setup (optional)
 
@@ -112,11 +122,11 @@ npm.cmd ci
 npm.cmd run dist
 ```
 
-Output: `release/installers/DeskMate-Setup-0.4.1-x64.exe`. Every `dist` run packages the current source; no separate `package` step is needed. The installer supports English, Chinese and Japanese, installs for the current user without administrator access, lets you choose a directory, and creates desktop/Start Menu shortcuts. It does not launch the app automatically. Uninstall from Windows Installed Apps; user data is retained. Rebuilding the same version replaces its installer artifact.
+Output: `release/installers/DeskMate-Setup-0.5.0-x64.exe`. Every `dist` run packages the current source; no separate `package` step is needed. The installer supports English, Chinese and Japanese, installs for the current user without administrator access, lets you choose a directory, and creates desktop/Start Menu shortcuts. It does not launch the app automatically. Uninstall from Windows Installed Apps; user data is retained. Rebuilding the same version replaces its installer artifact.
 
-For a portable folder, run `npm.cmd run package`: output is `release/DeskMate-0.4.1-win32-x64/`. Existing portable output is protected; choose another `DESKMATE_BUILD_NAME` to rebuild. Both editions share user data; quit one before opening the other.
+For a portable folder, run `npm.cmd run package`: output is `release/DeskMate-0.5.0-win32-x64/`. Existing portable output is protected; choose another `DESKMATE_BUILD_NAME` to rebuild. Both editions share user data; quit one before opening the other.
 
-Configuration: `electron-builder.cjs`; workflow: `scripts/installer.cjs`; original generated icon: `scripts/icon.cjs`. Version comes from `package.json`. Uses electron-builder's NSIS target and never publishes automatically. The installer is unsigned and Windows may show an unknown publisher; configure code signing separately before public distribution. The default artwork's CC BY-NC 4.0 noncommercial restriction also applies to the installer.
+Configuration: `electron-builder.cjs`; workflow: `scripts/installer.cjs`; original generated icon: `scripts/icon.cjs`. Version comes from `package.json`. Uses electron-builder's NSIS target and never publishes automatically. The installer is unsigned and Windows may show an unknown publisher; configure code signing separately before public distribution. The built-in artwork's CC BY-NC 4.0 noncommercial restriction also applies to the installer.
 
 ## Data, development and testing
 
@@ -124,6 +134,7 @@ New users: `%APPDATA%/DeskMate/`. If the new directory has no saved data and `%A
 
 ```powershell
 npm.cmd test
+npm.cmd run test:skins # Built-in artwork, languages and per-agent bindings
 npm.cmd run test:ui
 npm.cmd run test:pet    # Pet display modes, interactions and persistence
 npm.cmd run package

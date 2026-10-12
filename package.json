@@ -1,6 +1,6 @@
 {
   "name": "deskmate",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "private": true,
   "description": "DeskMate — AI agent usage, Git history, notes and reminders",
   "main": "src/main.cjs",
@@ -9,6 +9,7 @@
     "test": "node --test test/*.test.cjs",
     "test:ui": "node scripts/ui-smoke.cjs",
     "test:pet": "node scripts/ui-pet.cjs",
+    "test:skins": "node scripts/ui-skins.cjs",
     "package": "node scripts/package.cjs",
     "dist": "node scripts/installer.cjs"
   },

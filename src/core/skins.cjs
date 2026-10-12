@@ -2,8 +2,12 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const { randomUUID } = require('node:crypto');
 const { pathToFileURL } = require('node:url');
-const builtinRoot = path.resolve(__dirname, '../../assets/white-dragon');
-const builtin = { id: 'white-dragon', name: '白发龙娘', author: 'fywdy / chatgpt-chibi-pets', states: { idle: 'idle.webp', happy: 'waving.webp', attention: 'waiting.webp', error: 'failed.webp', reminder: 'jumping.webp', working: 'review.webp' }, directory: builtinRoot };
+const catalog = require('../../assets/catalog.json');
+const builtins = catalog.skins.map(id => ({
+  ...require(`../../assets/${id}/skin.json`), id,
+  directory: path.resolve(__dirname, '../../assets', id)
+}));
+const builtin = builtins[0];
 async function importSkin(store, manifestPath) {
   const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
   if (typeof manifest.name !== 'string' || !manifest.name.trim() || !manifest.states?.idle) throw new Error('资源包需要 name 和 states.idle。');
@@ -26,6 +30,6 @@ async function importSkin(store, manifestPath) {
   store.update(s => s.skins.push(skin)); return skin;
 }
 function allSkins(store) {
-  return [builtin, ...store.state.skins].map(s => ({ ...s, states: Object.fromEntries(Object.entries(s.states).map(([k, f]) => [k, pathToFileURL(path.join(s.directory, f)).href])) }));
+  return [...builtins, ...store.state.skins].map(s => ({ ...s, states: Object.fromEntries(Object.entries(s.states).map(([k, f]) => [k, pathToFileURL(path.join(s.directory, f)).href])) }));
 }
-module.exports = { importSkin, allSkins, builtin };
+module.exports = { importSkin, allSkins, builtin, builtins };

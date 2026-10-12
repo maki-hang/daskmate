@@ -1,0 +1,326 @@
+{
+  "repository": "https://github.com/fywdy/chatgpt-chibi-pets",
+  "revision": "d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2",
+  "files": {
+    "white-dragon/idle.webp": {
+      "path": "chatgpt-white-dragon-chibi-v5/qa/previews/idle.webp",
+      "bytes": 254818,
+      "sha256": "61df3baff454489dbdcf30e4e58220064c7309ca7a78ef1a82ce52c19c04caf3"
+    },
+    "white-dragon/waving.webp": {
+      "path": "chatgpt-white-dragon-chibi-v5/qa/previews/waving.webp",
+      "bytes": 176026,
+      "sha256": "64a88dcbff7fd219d542c6b0f72592770c2173aca5dd9f4d4259de42bee6ff06"
+    },
+    "white-dragon/waiting.webp": {
+      "path": "chatgpt-white-dragon-chibi-v5/qa/previews/waiting.webp",
+      "bytes": 268234,
+      "sha256": "c8c1799e7922687b0e531e27f975626dc31ebc0b48dfe13fc6a39c02038b12c5"
+    },
+    "white-dragon/failed.webp": {
+      "path": "chatgpt-white-dragon-chibi-v5/qa/previews/failed.webp",
+      "bytes": 304008,
+      "sha256": "9def00c0093bd5053eeb28afc26e220564453c3c5995e5aca55d42abd22de051"
+    },
+    "white-dragon/jumping.webp": {
+      "path": "chatgpt-white-dragon-chibi-v5/qa/previews/jumping.webp",
+      "bytes": 221646,
+      "sha256": "3f6556f9248637f085f1fa55ee1501049f39e2615cef979fb79c6b5275d66b47"
+    },
+    "white-dragon/review.webp": {
+      "path": "chatgpt-white-dragon-chibi-v5/qa/previews/review.webp",
+      "bytes": 278892,
+      "sha256": "4a1c6c766b130687aa5993bf97ba62c2b04da0512c34855540db7e3fd5ece12b"
+    },
+    "white-dragon/UPSTREAM-LICENSE.txt": {
+      "path": "LICENSE",
+      "bytes": 17465,
+      "sha256": "16e11fba88f0fa3d266e0540bc695747d7dd513ed7d065e44445e8d3ef5d0cd0"
+    },
+    "white-dragon/UPSTREAM-NOTICE.md": {
+      "path": "NOTICE.md",
+      "bytes": 1919,
+      "sha256": "18590cb91c023dfec4e8a92c927213e0caa826e1a3264c8387cb20353c8299c0"
+    },
+    "orange-scholar/idle.webp": {
+      "path": "claude-orange-scholar-chibi-v3/qa/previews/idle.webp",
+      "bytes": 155306,
+      "sha256": "bc8ad881bb13b3530e81c60110dce3544bc1c59948f72588c29485f2dae21084"
+    },
+    "orange-scholar/waving.webp": {
+      "path": "claude-orange-scholar-chibi-v3/qa/previews/waving.webp",
+      "bytes": 168948,
+      "sha256": "40bfc5094d945be9a3e548103d66426ae61bd1111a2b6b8caa4cd2cfc89c878f"
+    },
+    "orange-scholar/waiting.webp": {
+      "path": "claude-orange-scholar-chibi-v3/qa/previews/waiting.webp",
+      "bytes": 139332,
+      "sha256": "49700749aecf515afb3abc7bdf0a72a1b8c560b3fcf130e739e9d273e6794d76"
+    },
+    "orange-scholar/failed.webp": {
+      "path": "claude-orange-scholar-chibi-v3/qa/previews/failed.webp",
+      "bytes": 105128,
+      "sha256": "69644658ea4cfc0309692fcd98569c086d59fc52f278c9b0776301269cb0b622"
+    },
+    "orange-scholar/jumping.webp": {
+      "path": "claude-orange-scholar-chibi-v3/qa/previews/jumping.webp",
+      "bytes": 139412,
+      "sha256": "29c3df346b2006bbfc31cd38876a70726e3865eae9fca3897144d5a26ae9008c"
+    },
+    "orange-scholar/review.webp": {
+      "path": "claude-orange-scholar-chibi-v3/qa/previews/review.webp",
+      "bytes": 212672,
+      "sha256": "5936fdc9aac245489aa2cdef09cabbd499a40ec97a0aad9dbc73898254e02b44"
+    },
+    "orange-scholar/UPSTREAM-LICENSE.txt": {
+      "path": "LICENSE",
+      "bytes": 17465,
+      "sha256": "16e11fba88f0fa3d266e0540bc695747d7dd513ed7d065e44445e8d3ef5d0cd0"
+    },
+    "orange-scholar/UPSTREAM-NOTICE.md": {
+      "path": "NOTICE.md",
+      "bytes": 1919,
+      "sha256": "18590cb91c023dfec4e8a92c927213e0caa826e1a3264c8387cb20353c8299c0"
+    },
+    "whale-maid/idle.webp": {
+      "path": "deepseek-whale-maid-chibi-v4/qa/previews/idle.webp",
+      "bytes": 254256,
+      "sha256": "805542c9532b3e75d895cb83cbaadfa735b4a4d22bcf63ca0ef166b561d65977"
+    },
+    "whale-maid/waving.webp": {
+      "path": "deepseek-whale-maid-chibi-v4/qa/previews/waving.webp",
+      "bytes": 167720,
+      "sha256": "f1a885a10e518046f35a0596c8d9f6a1cdae96f1ba96838569c2c8c254d6b7d4"
+    },
+    "whale-maid/waiting.webp": {
+      "path": "deepseek-whale-maid-chibi-v4/qa/previews/waiting.webp",
+      "bytes": 228534,
+      "sha256": "074b82cb17cc91b1655de68c9e6147df59c62f5fde85cf9810c7496b3588f994"
+    },
+    "whale-maid/failed.webp": {
+      "path": "deepseek-whale-maid-chibi-v4/qa/previews/failed.webp",
+      "bytes": 341864,
+      "sha256": "48e8a0eca1dccc38e18ecd62cfb7c94c41752dbdb251de8b21daf52a16704177"
+    },
+    "whale-maid/jumping.webp": {
+      "path": "deepseek-whale-maid-chibi-v4/qa/previews/jumping.webp",
+      "bytes": 216916,
+      "sha256": "bde58fbdb11b23ec92dbfbdb88f0db9ac5db5da73651eaf6552e22f63d4abb95"
+    },
+    "whale-maid/review.webp": {
+      "path": "deepseek-whale-maid-chibi-v4/qa/previews/review.webp",
+      "bytes": 232444,
+      "sha256": "ecb2b107c15240ded93cbf462537fca3d5c0a20f6889d920fcdd4606e7f51835"
+    },
+    "whale-maid/UPSTREAM-LICENSE.txt": {
+      "path": "LICENSE",
+      "bytes": 17465,
+      "sha256": "16e11fba88f0fa3d266e0540bc695747d7dd513ed7d065e44445e8d3ef5d0cd0"
+    },
+    "whale-maid/UPSTREAM-NOTICE.md": {
+      "path": "NOTICE.md",
+      "bytes": 1919,
+      "sha256": "18590cb91c023dfec4e8a92c927213e0caa826e1a3264c8387cb20353c8299c0"
+    },
+    "star-cat/idle.webp": {
+      "path": "gemini-star-cat-chibi-v1/qa/previews/idle.webp",
+      "bytes": 224522,
+      "sha256": "40bd981adeb20d28f2dd756ad28c325bd30b64b0e7a17912ac4ef4b4a7330d40"
+    },
+    "star-cat/waving.webp": {
+      "path": "gemini-star-cat-chibi-v1/qa/previews/waving.webp",
+      "bytes": 209900,
+      "sha256": "33a7733933bf51b8e2715cd5ac1aafc90bab9c1104a57f5af1700fc189ab081a"
+    },
+    "star-cat/waiting.webp": {
+      "path": "gemini-star-cat-chibi-v1/qa/previews/waiting.webp",
+      "bytes": 305124,
+      "sha256": "cc003e872846bb60d9d0e638175bae419fcf89c9a62e8f9a1c6d93f75fdb4ba4"
+    },
+    "star-cat/failed.webp": {
+      "path": "gemini-star-cat-chibi-v1/qa/previews/failed.webp",
+      "bytes": 381122,
+      "sha256": "a656314c652d51372674b752cfc95091aa26e6b35fab7af46fb863641a00bc92"
+    },
+    "star-cat/jumping.webp": {
+      "path": "gemini-star-cat-chibi-v1/qa/previews/jumping.webp",
+      "bytes": 238612,
+      "sha256": "3d2608278913ba8e4bdd917143ed96669227e6419445e71bd5e7236f0627284e"
+    },
+    "star-cat/review.webp": {
+      "path": "gemini-star-cat-chibi-v1/qa/previews/review.webp",
+      "bytes": 203084,
+      "sha256": "67ca4afe27c4dceff21ce7bb07a1148126a93dc2224d5dc692f977b02d5bb3a9"
+    },
+    "star-cat/UPSTREAM-LICENSE.txt": {
+      "path": "LICENSE",
+      "bytes": 17465,
+      "sha256": "16e11fba88f0fa3d266e0540bc695747d7dd513ed7d065e44445e8d3ef5d0cd0"
+    },
+    "star-cat/UPSTREAM-NOTICE.md": {
+      "path": "NOTICE.md",
+      "bytes": 1919,
+      "sha256": "18590cb91c023dfec4e8a92c927213e0caa826e1a3264c8387cb20353c8299c0"
+    },
+    "gothic/idle.webp": {
+      "path": "grok-gothic-chibi-v1/qa/previews/idle.webp",
+      "bytes": 263640,
+      "sha256": "e8b01d78f8b92c12edb60a4d00d1834a99bd098850d0948bed7738c65c234365"
+    },
+    "gothic/waving.webp": {
+      "path": "grok-gothic-chibi-v1/qa/previews/waving.webp",
+      "bytes": 163546,
+      "sha256": "ed8bbef4a5a1cade8c6192281e961c83694fb9cd0e660af67b32371bcfca4b05"
+    },
+    "gothic/waiting.webp": {
+      "path": "grok-gothic-chibi-v1/qa/previews/waiting.webp",
+      "bytes": 222370,
+      "sha256": "cf013d42ae43fb117a973d67bfd10513a4f0b625f74d02a7b468057bd85f3960"
+    },
+    "gothic/failed.webp": {
+      "path": "grok-gothic-chibi-v1/qa/previews/failed.webp",
+      "bytes": 332836,
+      "sha256": "7630ce07f4728c521a964ab9ad5e7ff14dd227c37beb5a1a658ec8c691eaf055"
+    },
+    "gothic/jumping.webp": {
+      "path": "grok-gothic-chibi-v1/qa/previews/jumping.webp",
+      "bytes": 219686,
+      "sha256": "73710a818a91fb6451e95b5a9813a1ba092eeaf1472cb168f1c167be7f098e62"
+    },
+    "gothic/review.webp": {
+      "path": "grok-gothic-chibi-v1/qa/previews/review.webp",
+      "bytes": 268002,
+      "sha256": "09d0026da8018867d1554b137bd30d4d86589bf3eeef6e6a255d02105ec09ef6"
+    },
+    "gothic/UPSTREAM-LICENSE.txt": {
+      "path": "LICENSE",
+      "bytes": 17465,
+      "sha256": "16e11fba88f0fa3d266e0540bc695747d7dd513ed7d065e44445e8d3ef5d0cd0"
+    },
+    "gothic/UPSTREAM-NOTICE.md": {
+      "path": "NOTICE.md",
+      "bytes": 1919,
+      "sha256": "18590cb91c023dfec4e8a92c927213e0caa826e1a3264c8387cb20353c8299c0"
+    },
+    "moon-maid/idle.webp": {
+      "path": "kimi-moon-maid-chibi-v2/qa/previews/idle.webp",
+      "bytes": 153566,
+      "sha256": "f8376fc0e274b91c8e564c9a8787d3b99417c7963223ce1963155fe60acfad29"
+    },
+    "moon-maid/waving.webp": {
+      "path": "kimi-moon-maid-chibi-v2/qa/previews/waving.webp",
+      "bytes": 97780,
+      "sha256": "5bb5e6025170d4b4b25633795f05f6963285755fe05840196f45486e2c768e4b"
+    },
+    "moon-maid/waiting.webp": {
+      "path": "kimi-moon-maid-chibi-v2/qa/previews/waiting.webp",
+      "bytes": 172204,
+      "sha256": "510fedb72025289036053b069ed0f7baf11ef6ed5bbf9caeb409c07ae4f341cd"
+    },
+    "moon-maid/failed.webp": {
+      "path": "kimi-moon-maid-chibi-v2/qa/previews/failed.webp",
+      "bytes": 328456,
+      "sha256": "9bd4efce4c1ad7ba587012920b819bca1ed019bbed8352414e40967960857a36"
+    },
+    "moon-maid/jumping.webp": {
+      "path": "kimi-moon-maid-chibi-v2/qa/previews/jumping.webp",
+      "bytes": 102364,
+      "sha256": "95e77fbf410a98596898d1a6565fae30269135d36fb17744e81f224c68fc2d77"
+    },
+    "moon-maid/review.webp": {
+      "path": "kimi-moon-maid-chibi-v2/qa/previews/review.webp",
+      "bytes": 213038,
+      "sha256": "1265ded546b7cff8c5536a576842e852beade8128bf5202537085c3571f76c4f"
+    },
+    "moon-maid/UPSTREAM-LICENSE.txt": {
+      "path": "LICENSE",
+      "bytes": 17465,
+      "sha256": "16e11fba88f0fa3d266e0540bc695747d7dd513ed7d065e44445e8d3ef5d0cd0"
+    },
+    "moon-maid/UPSTREAM-NOTICE.md": {
+      "path": "NOTICE.md",
+      "bytes": 1919,
+      "sha256": "18590cb91c023dfec4e8a92c927213e0caa826e1a3264c8387cb20353c8299c0"
+    },
+    "blue-scholar/idle.webp": {
+      "path": "qwen-chibi-scholar-v3/qa/previews/idle.webp",
+      "bytes": 249510,
+      "sha256": "b976da60115f7ac2ea916e2d669b05e155f268984763cf5a75e9c7016eda2e96"
+    },
+    "blue-scholar/waving.webp": {
+      "path": "qwen-chibi-scholar-v3/qa/previews/waving.webp",
+      "bytes": 165408,
+      "sha256": "8a4dba0471ce4624d4430b9f90a78775640411435dbc0328fe9ac1299f6fad61"
+    },
+    "blue-scholar/waiting.webp": {
+      "path": "qwen-chibi-scholar-v3/qa/previews/waiting.webp",
+      "bytes": 253710,
+      "sha256": "a9496dd4f462fb6d5af10ab7c15558dceaa7f7a292cda0a1973075e3f6f268aa"
+    },
+    "blue-scholar/failed.webp": {
+      "path": "qwen-chibi-scholar-v3/qa/previews/failed.webp",
+      "bytes": 278334,
+      "sha256": "a583170704ab92605e694f41ba1c45158d59f31dfdae6318b2c258afef312a45"
+    },
+    "blue-scholar/jumping.webp": {
+      "path": "qwen-chibi-scholar-v3/qa/previews/jumping.webp",
+      "bytes": 259350,
+      "sha256": "ce8712d38aae93f31b39791da98e184173bac659a9b62157aecd1dd1a4b6ebec"
+    },
+    "blue-scholar/review.webp": {
+      "path": "qwen-chibi-scholar-v3/qa/previews/review.webp",
+      "bytes": 214574,
+      "sha256": "f7c65f89525a0e92952e2d0e3cdfe27351135205e779b0583fba2c25a2ad4d13"
+    },
+    "blue-scholar/UPSTREAM-LICENSE.txt": {
+      "path": "LICENSE",
+      "bytes": 17465,
+      "sha256": "16e11fba88f0fa3d266e0540bc695747d7dd513ed7d065e44445e8d3ef5d0cd0"
+    },
+    "blue-scholar/UPSTREAM-NOTICE.md": {
+      "path": "NOTICE.md",
+      "bytes": 1919,
+      "sha256": "18590cb91c023dfec4e8a92c927213e0caa826e1a3264c8387cb20353c8299c0"
+    },
+    "coral-tech/idle.webp": {
+      "path": "zhipu-chibi-tech-v2/qa/previews/idle.webp",
+      "bytes": 210106,
+      "sha256": "b314bce1a53950072824656d04c9fdab8bfffccab1549e34dd326e632f4cb30c"
+    },
+    "coral-tech/waving.webp": {
+      "path": "zhipu-chibi-tech-v2/qa/previews/waving.webp",
+      "bytes": 144656,
+      "sha256": "6867c740e446eb9ce01a9d2c0d623bfc0e19ba01cffabcb135fdcfa63e826fce"
+    },
+    "coral-tech/waiting.webp": {
+      "path": "zhipu-chibi-tech-v2/qa/previews/waiting.webp",
+      "bytes": 187330,
+      "sha256": "b9f9b071250dbb22b24c835a262d8245051346994483d17f217a2bef66fefb59"
+    },
+    "coral-tech/failed.webp": {
+      "path": "zhipu-chibi-tech-v2/qa/previews/failed.webp",
+      "bytes": 282026,
+      "sha256": "b264a0b89374f948f7934e2b836c8c3361c2194f32d3e657028336699610228f"
+    },
+    "coral-tech/jumping.webp": {
+      "path": "zhipu-chibi-tech-v2/qa/previews/jumping.webp",
+      "bytes": 205374,
+      "sha256": "52843f4d01ddaed701cc19b960be0ba085f05ecc32704304d65db21d6af5c56a"
+    },
+    "coral-tech/review.webp": {
+      "path": "zhipu-chibi-tech-v2/qa/previews/review.webp",
+      "bytes": 229276,
+      "sha256": "6a4277c51aad2841ed403e414b834ceb75697856ff8c3b93288853bc58eff16a"
+    },
+    "coral-tech/UPSTREAM-LICENSE.txt": {
+      "path": "LICENSE",
+      "bytes": 17465,
+      "sha256": "16e11fba88f0fa3d266e0540bc695747d7dd513ed7d065e44445e8d3ef5d0cd0"
+    },
+    "coral-tech/UPSTREAM-NOTICE.md": {
+      "path": "NOTICE.md",
+      "bytes": 1919,
+      "sha256": "18590cb91c023dfec4e8a92c927213e0caa826e1a3264c8387cb20353c8299c0"
+    }
+  }
+}

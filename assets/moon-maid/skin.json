@@ -1,0 +1,19 @@
+{
+  "name": "Kimi 月影娘",
+  "names": {
+    "zh-CN": "Kimi 月影娘",
+    "en": "Kimi · Moon maid",
+    "ja": "Kimi・月影のメイド"
+  },
+  "author": "fywdy / chatgpt-chibi-pets",
+  "source": "https://github.com/fywdy/chatgpt-chibi-pets/tree/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2/kimi-moon-maid-chibi-v2",
+  "license": "CC BY-NC 4.0",
+  "states": {
+    "idle": "idle.webp",
+    "happy": "waving.webp",
+    "attention": "waiting.webp",
+    "error": "failed.webp",
+    "reminder": "jumping.webp",
+    "working": "review.webp"
+  }
+}

@@ -2,11 +2,11 @@
 
 **中文** · [English](README.en.md) · [日本語](README.ja.md)
 
-一个住在桌面上的白发龙娘：查看 AI Agent 用量、收集 Git 提交、按日期写便签、到点提醒。桌面始终只有一个宠物；切换 Agent 时，数据和绑定形象同步切换。当前目标平台为 Windows x64。
+8 位可选的桌面小伙伴：查看 AI Agent 用量、收集 Git 提交、按日期写便签、到点提醒。桌面始终只有一个宠物；切换 Agent 时，数据和绑定形象同步切换。当前目标平台为 Windows x64。
 
 ## 运行
 
-打包版：打开 `release/DeskMate-0.4.1-win32-x64/DeskMate.exe`，整个目录需一起保留。如果旧版正在运行，请先从旧版托盘「退出桌伴」，再启动新版。沿用原数据目录，旧便签和提醒会自动迁移。
+打包版：打开 `release/DeskMate-0.5.0-win32-x64/DeskMate.exe`，整个目录需一起保留。如果旧版正在运行，请先从旧版托盘「退出桌伴」，再启动新版。沿用原数据目录，旧便签和提醒会自动迁移。
 
 源码版需要 Node.js 22.12+、npm 和 Git：
 
@@ -23,7 +23,7 @@ npm.cmd start
 - **Git 足迹**：添加仓库或扫描代码目录，后台每分钟索引全部本地分支、已拉取远程跟踪分支及 reflog 可达提交，保留历史存档。默认仅展示各仓库有效 `git config user.email` 匹配的作者；没有邮箱时回退 `user.name`，两者都没有则无匹配记录。可切换「所有作者」，不影响存档。支持仓库/日期筛选、内容/作者/邮箱/哈希搜索与分页。已移除手动同步按钮。不修改 Git 配置或 Hook，不自动 fetch/push。未加入、未拉取或从未收录且已回收的记录无法恢复。
 - **便签与提醒**：整合为一个日历入口。一日多条便签，时间精确到时、分、秒，按需勾选「到点提醒我」，支持单次/每天/每周、编辑、暂停、启用、推迟 10 分钟、标记已读及关联删除。支持所选日期/全部便签/未读提醒筛选。活跃的重复或稍后提醒按下次到期日出现在日历上，保留原便签日期。仅编辑文字保留完成或暂停状态；改动日期、时间或重复规则会重新安排。语言切换保留草稿，切换页面时会确认是否丢弃。
 - **提醒运行方式**：使用本机时区。关闭面板仍提醒；退出程序或关机时不唤醒机器，启动或恢复时补发一次并推进重复任务。系统通知、桌宠气泡与未读记录并存。支持秒级时间输入，但系统负载/睡眠可能延后送达，并非实时调度器。打包版可设置开机启动。旧日期便签补为 `00:00:00`；旧提醒变成关联便签，保留重复、暂停、完成和未读状态。
-- **动画形象**：默认白发龙娘，每个 Agent 可绑定独立动画包，支持 GIF/WebP/PNG/APNG，缺少状态回退待机。
+- **动画形象**：内置 8 个角色，默认白发龙娘，每个 Agent 可选择不同角色或绑定自定义动画包，支持 GIF/WebP/PNG/APNG，缺少状态回退待机。
 
 接口来源：[Codex App Server](https://learn.chatgpt.com/docs/app-server)、[Claude Code 状态行](https://code.claude.com/docs/en/statusline)。
 
@@ -46,22 +46,30 @@ npm.cmd start
 
 官方发布：[Codex CLI](https://github.com/openai/codex/releases)、[Claude Code](https://github.com/anthropics/claude-code/releases)。应用内下拉菜单、确认弹窗、时间输入框采用统一样式；文件选择器与系统托盘菜单遵循 Windows 原生样式。
 
-## 默认动画来源与许可
+## 内置动画来源与许可
 
-默认角色为 **ChatGPT 白发龙娘 Q 版**，素材作者/发布者为 **fywdy / chatgpt-chibi-pets**。属于非官方同人，与 OpenAI 无关联。
+内置素材库中的全部 **8 个角色**，由 **fywdy / chatgpt-chibi-pets** 创作/发布，均为非官方同人，与品牌方无关联。默认仍为白发龙娘，已有绑定和自定义动画保持不变。
 
-| 项目 | 出处 |
+| 角色 | 本地资源包 |
 | --- | --- |
-| 原仓库 | [fywdy/chatgpt-chibi-pets](https://github.com/fywdy/chatgpt-chibi-pets) |
-| 角色 | `chatgpt-white-dragon-chibi-v5` |
-| 固定版本 | [`d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2`](https://github.com/fywdy/chatgpt-chibi-pets/tree/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2/chatgpt-white-dragon-chibi-v5) |
-| 原路径 | `chatgpt-white-dragon-chibi-v5/qa/previews/*.webp` |
-| 本地副本 | `assets/white-dragon/` |
-| 美术许可 | **CC BY-NC 4.0**：保留署名和声明，限非商业用途；不代表拥有原角色或品牌权利 |
+| ChatGPT 白发龙娘 | `assets/white-dragon/` |
+| Claude 橙书娘 | `assets/orange-scholar/` |
+| DeepSeek 蓝鲸女仆 | `assets/whale-maid/` |
+| Gemini 星猫娘 | `assets/star-cat/` |
+| Grok 暗金哥特娘 | `assets/gothic/` |
+| Kimi 月影娘 | `assets/moon-maid/` |
+| Qwen 蓝发学者娘 | `assets/blue-scholar/` |
+| 智谱 珊瑚技术娘 | `assets/coral-tech/` |
 
-复用未经修改的 `idle`、`waving`、`waiting`、`failed`、`jumping`、`review` 六份透明 WebP 动画，映射待机、交互、需关注、失败、提醒、工作状态。完整原始许可与声明保存在 `assets/white-dragon/UPSTREAM-LICENSE.txt`、`UPSTREAM-NOTICE.md`。本版本只知道用量，不将其冒充 Agent 实时工作状态。
+在「Agent 用量」选择 Agent，再到「形象与设置」点击角色即可绑定；切换 Agent 会恢复其形象，重启后保留。角色名称随中文、英语、日语切换。所有角色均可用于当前支持的 Codex、Claude Code；角色素材与用量接入分别管理。
 
-Electron 桌面能力、Git 本地命令、官方用量接口与现成动画均予以复用；Git/便签/提醒和管理界面为本项目实现。早期桌宠调研保留于 `docs/existing-projects.md`。
+来源：[fywdy/chatgpt-chibi-pets](https://github.com/fywdy/chatgpt-chibi-pets)，固定版本 [`d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2`](https://github.com/fywdy/chatgpt-chibi-pets/tree/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2)。各包的 `skin.json` 记录原角色路径；原始动画来自对应目录的 `qa/previews/`。`assets/catalog.json` 是内置清单，`assets/upstream-lock.json` 记录原路径、大小与 SHA-256 校验值。
+
+每个角色复用未经修改的 `idle`、`waving`、`waiting`、`failed`、`jumping`、`review` 六份透明 WebP 动画，共 48 份，对应待机、交互、需关注、失败、提醒和工作状态。动画表示桌宠交互与提醒，不代表 Agent 的实时工作状态。
+
+美术许可为 **CC BY-NC 4.0**：保留署名和声明，**仅限非商业用途**，不授予原角色或品牌权利。每个资源包均附有完整的 `UPSTREAM-LICENSE.txt` 与 `UPSTREAM-NOTICE.md`，安装包也包含这些文件。
+
+Electron、Git 本地命令、官方用量接口与现成动画均予以复用；Git/便签/提醒和管理界面为本项目实现。早期调研见 `docs/existing-projects.md`。
 
 ## 自定义动画
 
@@ -108,11 +116,11 @@ npm.cmd ci
 npm.cmd run dist
 ```
 
-产物：`release/installers/DeskMate-Setup-0.4.1-x64.exe`。`dist` 每次从当前源码重新打包，无需先运行 `package`。安装程序支持中文、英语、日语，按当前用户安装，无需管理员权限，可以选择安装目录，并创建桌面与开始菜单快捷方式。安装完不会自动启动；通过快捷方式打开即可。可在 Windows「已安装的应用」中卸载，卸载保留用户数据。同版本重复构建会更新对应安装包文件。
+产物：`release/installers/DeskMate-Setup-0.5.0-x64.exe`。`dist` 每次从当前源码重新打包，无需先运行 `package`。安装程序支持中文、英语、日语，按当前用户安装，无需管理员权限，可以选择安装目录，并创建桌面与开始菜单快捷方式。安装完不会自动启动；通过快捷方式打开即可。可在 Windows「已安装的应用」中卸载，卸载保留用户数据。同版本重复构建会更新对应安装包文件。
 
-仅需要免安装目录时运行 `npm.cmd run package`，输出 `release/DeskMate-0.4.1-win32-x64/`。该命令不覆盖已有目录，重新生成可指定 `DESKMATE_BUILD_NAME` 为新的目录名。安装版与免安装版共用同一用户数据目录，切换版本前先退出另一版。
+仅需要免安装目录时运行 `npm.cmd run package`，输出 `release/DeskMate-0.5.0-win32-x64/`。该命令不覆盖已有目录，重新生成可指定 `DESKMATE_BUILD_NAME` 为新的目录名。安装版与免安装版共用同一用户数据目录，切换版本前先退出另一版。
 
-构建配置：`electron-builder.cjs`；流程：`scripts/installer.cjs`；图标由 `scripts/icon.cjs` 原创生成。版本号统一取自 `package.json`。使用 electron-builder 的 NSIS 目标；源码与产物不会自动发布。当前为未签名安装包，Windows 可能显示未知发布者，正式分发前可另行配置代码签名。默认角色的 CC BY-NC 4.0 非商业限制仍适用于安装包。
+构建配置：`electron-builder.cjs`；流程：`scripts/installer.cjs`；图标由 `scripts/icon.cjs` 原创生成。版本号统一取自 `package.json`。使用 electron-builder 的 NSIS 目标；源码与产物不会自动发布。当前为未签名安装包，Windows 可能显示未知发布者，正式分发前可另行配置代码签名。内置角色的 CC BY-NC 4.0 非商业限制仍适用于安装包。
 
 ## 本地数据与验证
 
@@ -122,6 +130,7 @@ npm.cmd run dist
 
 ```powershell
 npm.cmd test           # 功能测试，含真实临时 Git 仓库
+npm.cmd run test:skins # Built-in artwork, languages and per-agent bindings
 npm.cmd run test:ui    # 隔离数据的 Electron 流程测试与截图
 npm.cmd run test:pet    # 桌宠展示模式、交互和持久化
 npm.cmd run package    # Windows x64 可运行目录

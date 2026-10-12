@@ -28,7 +28,7 @@ async function buildPortable(destination) {
   for (const doc of ['README.md','README.en.md','README.ja.md']) await fs.copyFile(path.join(root, doc), path.join(output, 'resources', doc));
   await fs.copyFile(path.join(__dirname, 'claude-statusline.cjs'), path.join(output, 'resources', 'claude-statusline.cjs'));
   await fs.copyFile(path.join(root, 'src/core/data-directory.cjs'), path.join(output, 'resources', 'data-directory.cjs'));
-  await fs.writeFile(path.join(output, 'resources', 'build-info.json'), JSON.stringify({ version: manifest.version, electron: expected, builtAt: new Date().toISOString(), artworkCommit: 'd5bbb27c79e5c08e8b8ab44d4023cd35a67418e2' }, null, 2));
+  await fs.writeFile(path.join(output, 'resources', 'build-info.json'), JSON.stringify({ version: manifest.version, electron: expected, builtAt: new Date().toISOString(), artworkCommit: require('../assets/catalog.json').revision, artworkSkins: require('../assets/catalog.json').skins }, null, 2));
   console.log('Built: ' + path.join(output, 'DeskMate.exe'));
   if (path.dirname(staging) !== path.join(root, '.cache') || !path.basename(staging).startsWith('app-package-')) throw new Error('Unsafe cleanup path');
   await fs.rm(staging, { recursive: true, force: true });

@@ -10,7 +10,7 @@ const { Store, saveNote, saveReminder } = require('../src/core/store.cjs');
 const { collectDue } = require('../src/core/reminders.cjs');
 const { GitIndex, discover } = require('../src/core/git.cjs');
 const { windowsFrom, UsageService } = require('../src/core/usage.cjs');
-const { importSkin, allSkins } = require('../src/core/skins.cjs');
+const { importSkin, allSkins, builtins } = require('../src/core/skins.cjs');
 const temp = () => fs.mkdtemp(path.join(os.tmpdir(), 'deskmate-test-'));
 
 test('notes persist Unicode and distinct dates; invalid date cannot corrupt stored content', async () => {
@@ -76,6 +76,6 @@ test('custom skin imports copy assets and reject paths outside the pack',async()
   const root=await temp(),source=path.join(root,'pack'),store=new Store(path.join(root,'data'));await fs.mkdir(source);
   await fs.copyFile(path.resolve(__dirname,'../assets/white-dragon/idle.webp'),path.join(source,'idle.webp'));
   const manifest=path.join(source,'skin.json');await fs.writeFile(manifest,JSON.stringify({name:'我的桌宠',states:{idle:'idle.webp'}}));
-  const skin=await importSkin(store,manifest);assert.equal(allSkins(store).length,2);assert.ok(allSkins(store)[1].states.idle.startsWith('file:'));assert.ok((await fs.stat(path.join(skin.directory,'idle.webp'))).size>0);
+  const skin=await importSkin(store,manifest);assert.equal(allSkins(store).length,builtins.length+1);assert.ok(allSkins(store).find(s=>s.id===skin.id).states.idle.startsWith('file:'));assert.ok((await fs.stat(path.join(skin.directory,'idle.webp'))).size>0);
   await fs.writeFile(manifest,JSON.stringify({name:'越界',states:{idle:'../pack/../../outside.webp'}}));await assert.rejects(()=>importSkin(store,manifest));
 });

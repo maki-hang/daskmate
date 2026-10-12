@@ -87,7 +87,7 @@ async function codexUsage(custom) {
         if (msg.id === 3) { tokensDone = true; tokenData = msg.error ? null : msg.result; complete(); }
       }
     });
-    send({ id: 1, method: 'initialize', params: { clientInfo: { name: 'deskmate_pc_assistant', title: 'DeskMate', version: '0.4.1' }, capabilities: {} } });
+    send({ id: 1, method: 'initialize', params: { clientInfo: { name: 'deskmate_pc_assistant', title: 'DeskMate', version: '0.5.0' }, capabilities: {} } });
   });
 }
 async function listJsonl(root) {

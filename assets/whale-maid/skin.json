@@ -1,0 +1,19 @@
+{
+  "name": "DeepSeek 蓝鲸女仆",
+  "names": {
+    "zh-CN": "DeepSeek 蓝鲸女仆",
+    "en": "DeepSeek · Whale maid",
+    "ja": "DeepSeek・青いクジラメイド"
+  },
+  "author": "fywdy / chatgpt-chibi-pets",
+  "source": "https://github.com/fywdy/chatgpt-chibi-pets/tree/d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2/deepseek-whale-maid-chibi-v4",
+  "license": "CC BY-NC 4.0",
+  "states": {
+    "idle": "idle.webp",
+    "happy": "waving.webp",
+    "attention": "waiting.webp",
+    "error": "failed.webp",
+    "reminder": "jumping.webp",
+    "working": "review.webp"
+  }
+}

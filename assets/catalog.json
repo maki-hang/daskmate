@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/fywdy/chatgpt-chibi-pets",
+  "revision": "d5bbb27c79e5c08e8b8ab44d4023cd35a67418e2",
+  "skins": [
+    "white-dragon",
+    "orange-scholar",
+    "whale-maid",
+    "star-cat",
+    "gothic",
+    "moon-maid",
+    "blue-scholar",
+    "coral-tech"
+  ]
+}
