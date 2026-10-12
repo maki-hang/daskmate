@@ -1,5 +1,7 @@
 let state, usage, anim = 'idle', restore, revealTimer, dismissTimer;
 let cardOpen = false, overPet = false, overCard = false, pointer = null, interactive;
+let press = null, suppressClick = false;
+const HOLD_TO_DRAG_MS = 350;
 const $ = id => document.getElementById(id);
 const lang = () => state?.settings.language || 'zh-CN';
 const tr = (key, values) => i18n.t(key, lang(), values);
@@ -7,7 +9,7 @@ const hoverMode = () => state?.settings.petQuotaDisplay === 'hover';
 
 function updatePointer() {
   const target = pointer && document.elementFromPoint(pointer.x, pointer.y);
-  const next = Boolean(target?.closest('[data-interactive]'));
+  const next = Boolean(press || target?.closest('[data-interactive]'));
   if (next === interactive) return;
   interactive = next;
   window.assistant.call('pet.pointer', { interactive: next }).catch(() => {});
@@ -26,7 +28,7 @@ function focusRevealsCard() {
 }
 function showCard() {
   clearTimeout(dismissTimer);
-  if (!hoverMode() || cardOpen) return;
+  if (!hoverMode() || cardOpen || press?.dragging) return;
   clearTimeout(revealTimer);
   revealTimer = setTimeout(() => setCardOpen(true), 100);
 }
@@ -74,11 +76,9 @@ function render() {
   const source = skin.states[anim] || skin.states.idle;
   if ($('character').src !== source) $('character').src = source;
   $('character').alt = tr('petAlt');
-  $('pet').ariaLabel = tr('openApp');
-  document.querySelector('.drag').title = tr('drag');
+  $('pet').ariaLabel = tr('petInteraction');
   const agentName = state.agents.find(a => a.id === agent).name;
   $('agent').textContent = agentName;
-  $('remaining-label').textContent = tr('remaining');
   const data = usage?.agent === agent ? usage : null;
   $('quota').replaceChildren();
   if (!data) addRow(tr('loading'), '');
@@ -117,7 +117,38 @@ for (const element of [$('pet'), $('status')]) {
   element.onfocus = () => { if (hoverMode() && focusRevealsCard()) setCardOpen(true); };
   element.onblur = hideCardSoon;
 }
+function finishPress(cancelled = false) {
+  const current = press;
+  if (!current) return;
+  clearTimeout(current.timer);
+  suppressClick = cancelled || current.dragging || current.moved;
+  press = null;
+  if (current.dragging) window.assistant.call('pet.drag.end').catch(() => {});
+  document.body.classList.remove('dragging');
+  if ($('pet').hasPointerCapture(current.id)) $('pet').releasePointerCapture(current.id);
+  updatePointer();
+}
+$('pet').onpointerdown = event => {
+  if (event.button !== 0 || !event.isPrimary || press) return;
+  suppressClick = false;
+  const current = press = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false, dragging: false };
+  $('pet').setPointerCapture(event.pointerId);
+  updatePointer();
+  current.timer = setTimeout(() => {
+    if (press !== current) return;
+    current.dragging = true;
+    clearTimeout(revealTimer); clearTimeout(dismissTimer);
+    if (hoverMode()) setCardOpen(false);
+    document.body.classList.add('dragging');
+    window.assistant.call('pet.drag.start').catch(() => finishPress(true));
+  }, HOLD_TO_DRAG_MS);
+};
+$('pet').onpointerup = event => { if (event.pointerId === press?.id) finishPress(); };
+$('pet').onpointercancel = () => finishPress(true);
+$('pet').onlostpointercapture = () => finishPress(true);
+$('pet').ondragstart = event => event.preventDefault();
 document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') finishPress(true);
   if (event.key === 'Escape' && hoverMode()) {
     clearTimeout(revealTimer);
     clearTimeout(dismissTimer);
@@ -125,10 +156,15 @@ document.addEventListener('keydown', event => {
     setCardOpen(false);
   }
 });
-document.addEventListener('pointermove', event => { pointer = { x: event.clientX, y: event.clientY }; updatePointer(); });
+document.addEventListener('pointermove', event => {
+  pointer = { x: event.clientX, y: event.clientY };
+  if (press && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 6) press.moved = true;
+  updatePointer();
+});
 document.documentElement.addEventListener('pointerleave', () => { pointer = null; overPet = overCard = false; hideCardSoon(); updatePointer(); });
-window.addEventListener('blur', () => { overPet = overCard = false; clearTimeout(revealTimer); clearTimeout(dismissTimer); if (hoverMode()) setCardOpen(false); });
-$('pet').onclick = () => {
+window.addEventListener('blur', () => { finishPress(true); overPet = overCard = false; clearTimeout(revealTimer); clearTimeout(dismissTimer); if (hoverMode()) setCardOpen(false); });
+$('pet').onclick = event => {
+  if (suppressClick && event.detail !== 0) { suppressClick = false; event.preventDefault(); return; }
   anim = 'happy'; render(); clearTimeout(restore);
   restore = setTimeout(() => { restore = null; onUsage(usage || { status: 'ok', windows: [] }); }, 2500);
   window.assistant.call('panel');

@@ -11,11 +11,12 @@ const { t, locales } = require('./renderer/i18n.js');
 const tr = (key) => t(key, store?.state.settings.language || 'zh-CN');
 
 const { dataDirectory } = require('./core/data-directory.cjs');
+const { PetDrag } = require('./core/pet-drag.cjs');
 app.setName('DeskMate');
 app.setAppUserModelId('com.deskmate.pc-assistant');
 app.setPath('userData', dataDirectory(app.getPath('appData')));
 if (!app.requestSingleInstanceLock()) app.quit();
-let store, gitIndex, usage, updates, pet, panel, tray, quitting = false, positionTimer, lastReminder = null;
+let store, gitIndex, usage, updates, pet, panel, tray, petDrag, quitting = false, positionTimer, lastReminder = null;
 const notifications = new Set();
 const renderer = path.join(__dirname, 'renderer');
 function broadcast(channel, data) {
@@ -167,7 +168,11 @@ app.whenReady().then(() => {
   const pos = saved ? { x: Math.min(Math.max(saved.x, display.x), display.x + display.width - 260), y: Math.min(Math.max(saved.y, display.y), display.y + display.height - 360) } : { x: bounds.x + bounds.width - 260, y: bounds.y + bounds.height - 390 };
   pet = new BrowserWindow({ ...pos, width: 260, height: 360, frame: false, transparent: true, resizable: false, skipTaskbar: true, alwaysOnTop: store.state.settings.alwaysOnTop, hasShadow: false, show: false, webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true, backgroundThrottling: false } });
   secureWindow(pet); pet.loadFile(path.join(renderer, 'pet.html')); pet.once('ready-to-show', () => { pet.setIgnoreMouseEvents(true, { forward: true }); pet.show(); });
-  pet.on('moved', () => { clearTimeout(positionTimer); positionTimer = setTimeout(() => { if (quitting || pet.isDestroyed()) return; const [x, y] = pet.getPosition(); store.update(s => { s.settings.position = { x, y }; }); }, 600); });
+  const savePetPosition = () => { clearTimeout(positionTimer); if (quitting || pet.isDestroyed()) return; const [x, y] = pet.getPosition(); store.update(s => { s.settings.position = { x, y }; }); };
+  petDrag = new PetDrag(pet, screen, savePetPosition);
+  pet.on('moved', () => { clearTimeout(positionTimer); positionTimer = setTimeout(savePetPosition, 600); });
+  pet.on('blur', () => petDrag.end());
+  pet.on('hide', () => petDrag.end());
   tray = new Tray(trayIcon()); tray.setToolTip(tr('appTitle')); tray.setContextMenu(petMenu()); tray.on('click', () => openPanel());
   ipcMain.handle('assistant:call', async (event, action, value) => {
     if (![pet?.webContents, panel?.webContents].includes(event.sender) || event.senderFrame !== event.sender.mainFrame) return { error: '不允许的请求' };
@@ -175,7 +180,12 @@ app.whenReady().then(() => {
       if (action === 'pet.pointer') {
         if (event.sender !== pet.webContents || typeof value?.interactive !== 'boolean') throw new Error('不允许的请求');
         // Transparent padding and the hidden hover card must not block the desktop.
-        pet.setIgnoreMouseEvents(!value.interactive, { forward: true });
+        pet.setIgnoreMouseEvents(!petDrag.active && !value.interactive, { forward: true });
+        return { result: true };
+      }
+      if (action === 'pet.drag.start' || action === 'pet.drag.end') {
+        if (event.sender !== pet.webContents) throw new Error('不允许的请求');
+        if (action === 'pet.drag.start') petDrag.start(); else petDrag.end();
         return { result: true };
       }
       return { result: await handle(action, value) };
@@ -193,4 +203,4 @@ app.whenReady().then(() => {
 app.on('second-instance', () => openPanel());
 app.on('window-all-closed', () => {});
 app.on('activate', () => openPanel());
-app.on('before-quit', () => { quitting = true; clearTimeout(positionTimer); disposeUsage(); disposeGit(); });
+app.on('before-quit', () => { petDrag?.end(); quitting = true; clearTimeout(positionTimer); disposeUsage(); disposeGit(); });
