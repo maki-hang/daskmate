@@ -11,7 +11,7 @@ const { t, locales } = require('./renderer/i18n.js');
 const tr = (key) => t(key, store?.state.settings.language || 'zh-CN');
 
 const { dataDirectory } = require('./core/data-directory.cjs');
-const { PetDrag } = require('./core/pet-drag.cjs');
+const { PetDrag, PET_BOUNDS, clampPetPosition } = require('./core/pet-drag.cjs');
 app.setName('DeskMate');
 app.setAppUserModelId('com.deskmate.pc-assistant');
 app.setPath('userData', dataDirectory(app.getPath('appData')));
@@ -164,8 +164,9 @@ app.whenReady().then(() => {
   if (!store.state.settings.language) store.update(s => { const locale = app.getLocale(); s.settings.language = locale.startsWith('ja') ? 'ja' : locale.startsWith('en') ? 'en' : 'zh-CN'; });
   const bounds = screen.getPrimaryDisplay().workArea;
   const saved = store.state.settings.position;
-  const display = saved ? screen.getDisplayNearestPoint(saved).workArea : bounds;
-  const pos = saved ? { x: Math.min(Math.max(saved.x, display.x), display.x + display.width - 260), y: Math.min(Math.max(saved.y, display.y), display.y + display.height - 360) } : { x: bounds.x + bounds.width - 260, y: bounds.y + bounds.height - 390 };
+  // The saved window origin can be off-screen when the pet is against an edge.
+  const display = saved ? screen.getDisplayNearestPoint({ x: saved.x + PET_BOUNDS.x + Math.floor(PET_BOUNDS.width / 2), y: saved.y + PET_BOUNDS.y + Math.floor(PET_BOUNDS.height / 2) }).workArea : bounds;
+  const pos = saved ? clampPetPosition(saved, display) : { x: bounds.x + bounds.width - 260, y: bounds.y + bounds.height - 390 };
   pet = new BrowserWindow({ ...pos, width: 260, height: 360, frame: false, transparent: true, resizable: false, skipTaskbar: true, alwaysOnTop: store.state.settings.alwaysOnTop, hasShadow: false, show: false, webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true, backgroundThrottling: false } });
   secureWindow(pet); pet.loadFile(path.join(renderer, 'pet.html')); pet.once('ready-to-show', () => { pet.setIgnoreMouseEvents(true, { forward: true }); pet.show(); });
   const savePetPosition = () => { clearTimeout(positionTimer); if (quitting || pet.isDestroyed()) return; const [x, y] = pet.getPosition(); store.update(s => { s.settings.position = { x, y }; }); };

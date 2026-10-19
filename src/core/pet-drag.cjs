@@ -1,4 +1,13 @@
 // Electron supplies cursor and window coordinates in screen DIP, including mixed-DPI monitors.
+// Match #pet in pet.css: transparent window padding may extend past the desktop.
+const PET_BOUNDS = Object.freeze({ x: 35, y: 53, width: 190, height: 185 });
+function clampPetPosition(position, area) {
+  const minX = area.x - PET_BOUNDS.x, minY = area.y - PET_BOUNDS.y;
+  return {
+    x: Math.round(Math.min(Math.max(position.x, minX), minX + Math.max(0, area.width - PET_BOUNDS.width))),
+    y: Math.round(Math.min(Math.max(position.y, minY), minY + Math.max(0, area.height - PET_BOUNDS.height)))
+  };
+}
 class PetDrag {
   constructor(window, screen, onEnd = () => {}) {
     this.window = window;
@@ -19,9 +28,7 @@ class PetDrag {
     if (this.window.isDestroyed()) { this.end(); return; }
     const point = this.screen.getCursorScreenPoint();
     const area = this.screen.getDisplayNearestPoint(point).workArea;
-    const [width, height] = this.window.getSize();
-    const x = Math.round(Math.min(Math.max(this.origin[0] + point.x - this.cursor.x, area.x), area.x + Math.max(0, area.width - width)));
-    const y = Math.round(Math.min(Math.max(this.origin[1] + point.y - this.cursor.y, area.y), area.y + Math.max(0, area.height - height)));
+    const { x, y } = clampPetPosition({ x: this.origin[0] + point.x - this.cursor.x, y: this.origin[1] + point.y - this.cursor.y }, area);
     const current = this.window.getPosition();
     if (current[0] !== x || current[1] !== y) this.window.setPosition(x, y);
   }
@@ -33,4 +40,4 @@ class PetDrag {
     if (!this.window.isDestroyed()) this.onEnd();
   }
 }
-module.exports = { PetDrag };
+module.exports = { PetDrag, PET_BOUNDS, clampPetPosition };

@@ -1,6 +1,7 @@
 const {_electron:electron}=require('playwright');
 const fs=require('node:fs/promises'),path=require('node:path'),assert=require('node:assert/strict');
 const {Store}=require('../src/core/store.cjs');
+const {PET_BOUNDS}=require('../src/core/pet-drag.cjs');
 const root=path.resolve(__dirname,'..');
 (async()=>{
   const folder=await fs.mkdtemp(path.join(root,'.cache/pet-ui-')),data=path.join(folder,'data');
@@ -84,7 +85,7 @@ const root=path.resolve(__dirname,'..');
     assert.ok(await app.evaluate(()=>global.dragStarts)>0,'native drag starts after long press');
     await app.evaluate(()=>{global.dragCursor.x+=48;global.dragCursor.y+=32;});
     for(let i=0;i<40&&(await position())[0]===startPosition[0];i++)await new Promise(r=>setTimeout(r,25));
-    const dropped=[startPosition[0]+48,startPosition[1]+32];assert.deepEqual(await position(),dropped);
+    let dropped=[startPosition[0]+48,startPosition[1]+32];assert.deepEqual(await position(),dropped);
     await pet.mouse.up();await pet.waitForFunction(()=>!document.body.classList.contains('dragging'));
     await new Promise(r=>setTimeout(r,100));assert.equal(await panelVisible(),false,'drag release must not open the panel');
     await app.evaluate(()=>{global.dragCursor.x+=30;});await new Promise(r=>setTimeout(r,80));assert.deepEqual(await position(),dropped,'release stops tracking the mouse');
@@ -95,9 +96,33 @@ const root=path.resolve(__dirname,'..');
     await pet.locator('#pet').hover();await pet.mouse.down();await pet.waitForFunction(()=>document.body.classList.contains('dragging'));await pet.keyboard.press('Escape');await pet.mouse.up();assert.equal(await pet.locator('body.dragging').count(),0);assert.equal(await panelVisible(),false,'cancelled drag does not open panel');
     await pet.locator('#pet').click({button:'right'});assert.equal(await pet.locator('body.dragging').count(),0);await pet.keyboard.press('Escape');
     const deniedDrag=await page.evaluate(()=>window.assistant.call('pet.drag.start').then(()=>false,e=>e.message));assert.ok(deniedDrag,'panel cannot start native dragging');
+    const petRect=await pet.locator('#pet').boundingBox();
+    assert.deepEqual(petRect,PET_BOUNDS,'native drag limits match the rendered pet rectangle');
+    const area=await app.evaluate(({screen})=>screen.getPrimaryDisplay().workArea);
+    const edgePositions=[
+      [area.x-PET_BOUNDS.x,area.y-PET_BOUNDS.y],
+      [area.x+area.width-PET_BOUNDS.x-PET_BOUNDS.width,area.y-PET_BOUNDS.y],
+      [area.x+area.width-PET_BOUNDS.x-PET_BOUNDS.width,area.y+area.height-PET_BOUNDS.y-PET_BOUNDS.height],
+      [area.x-PET_BOUNDS.x,area.y+area.height-PET_BOUNDS.y-PET_BOUNDS.height]
+    ];
+    // Keep the simulated pointer on this display, while requesting positions beyond each corner.
+    for(const [x,y] of edgePositions){
+      await app.evaluate(({BrowserWindow,screen},{x,y,area})=>{
+        const w=BrowserWindow.getAllWindows().find(w=>w.webContents.getURL().endsWith('/pet.html'));
+        const corner={x:x<area.x?area.x:area.x+area.width-1,y:y<area.y?area.y:area.y+area.height-1};
+        global.dragCursor={x:area.x+Math.floor(area.width/2),y:area.y+Math.floor(area.height/2)};
+        w.setPosition(x-(corner.x-global.dragCursor.x)+(x<area.x?-50:50),y-(corner.y-global.dragCursor.y)+(y<area.y?-50:50));
+      },{x,y,area});
+      await pet.evaluate(()=>window.assistant.call('pet.drag.start'));
+      await app.evaluate((_,{x,y,area})=>{global.dragCursor={x:x<area.x?area.x:area.x+area.width-1,y:y<area.y?area.y:area.y+area.height-1};},{x,y,area});
+      for(let i=0;i<40&&JSON.stringify(await position())!==JSON.stringify([x,y]);i++)await new Promise(r=>setTimeout(r,25));
+      await pet.evaluate(()=>window.assistant.call('pet.drag.end'));
+      assert.deepEqual(await position(),[x,y],'pet reaches each desktop corner without crossing its bounds');
+      dropped=[x,y];
+    }
     await app.evaluate(({screen})=>{screen.getCursorScreenPoint=global.realCursor;});
     await app.close();await launch();assert.equal(await page.locator('[name=pet-quota-display][value=hover]').isChecked(),true,'hover preference persists after restart');assert.deepEqual(await position(),dropped,'dragged position persists after restart');await pet.mouse.move(2,355);await visible(false);
     assert.deepEqual(errors,[]);
-    console.log('PASS pet quota UI: unified 180px strip; short click; long-press drag/release/cancel/position persistence; hover reveal/bridge/dismiss/click; keyboard; pointer passthrough requests; three languages; 0/100/unknown/stale/multiple windows; agent switching; validated settings; restart persistence.');
+    console.log('PASS pet quota UI: unified 180px strip; short click; long-press drag/release/cancel; all four desktop edges and edge position persistence; hover reveal/bridge/dismiss/click; keyboard; pointer passthrough requests; three languages; 0/100/unknown/stale/multiple windows; agent switching; validated settings.');
   }finally{if(app)await app.close().catch(()=>{});}
 })().catch(e=>{console.error(e);process.exitCode=1;});
