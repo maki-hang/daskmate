@@ -2,13 +2,15 @@
 
 [中文](README.md) · **English** · [日本語](README.ja.md)
 
+**0.6.0: Tauri 2 + Rust + WebView2 + SQLite.** The existing HTML/CSS/JavaScript UI is retained. Packaged builds do not need Node.js. See [Rust migration](docs/rust-migration.md) for development and compatibility details.
+
 A Windows x64 desktop companion for AI usage, Git history, notes and reminders. One pet shows the selected agent; each agent can have its own animation pack.
 
 ## Start
 
-Run `release/DeskMate-0.5.0-win32-x64/DeskMate.exe`. Keep the entire folder together. If an older version is running, choose **Quit DeskMate** in its tray menu first. The new version uses the same local data directory and migrates existing notes and reminders automatically.
+Run `release/DeskMate-0.6.0-rust-win32-x64/DeskMate.exe`. Keep the entire folder together. If an older version is running, choose **Quit DeskMate** in its tray menu first. The new version uses the same local data directory and migrates existing notes and reminders automatically.
 
-For source builds, install Node.js 22.12+, npm and Git:
+For source builds, install Node.js 22.13+, npm, Git, Rust stable (1.90+), C++ Build Tools, Windows SDK and WebView2:
 
 ```powershell
 npm.cmd ci
@@ -100,37 +102,39 @@ Artwork license: **CC BY-NC 4.0**, **noncommercial use only**, retaining attribu
 
 ## Claude quota setup (optional)
 
-Install Node.js and merge the following into your Claude Code settings, adjusting the path. If you already have a status line, preserve it and chain the scripts rather than replacing it:
+Merge this into Claude Code settings and use the actual DeskMate executable path. The built-in Rust command needs no Node.js. Preserve and chain any existing status line.
 
 ```json
 {
   "statusLine": {
     "type": "command",
-    "command": "node \"E:/brain-storming/deskmate/scripts/claude-statusline.cjs\""
+    "command": "\"C:/DeskMate/DeskMate.exe\" --claude-statusline"
   }
 }
 ```
 
-The packaged script is `resources/claude-statusline.cjs`. It saves only quota values, reset times and the snapshot time, prints a visible status line and does not read credentials or send additional quota requests. Both processes must use the same data directory. Use Claude again to refresh stale snapshots.
-
 ## Build a Windows installer
 
-Open PowerShell in `E:\brain-storming\deskmate`. Requires Windows x64, Node.js 22.12+ and npm. The first build downloads Electron and NSIS tools.
+Open PowerShell in `E:\brain-storming\deskmate`. Use the source-build prerequisites above. First build downloads Rust dependencies and NSIS tools.
 
 ```powershell
 npm.cmd ci
 npm.cmd run dist
 ```
 
-Output: `release/installers/DeskMate-Setup-0.5.0-x64.exe`. Every `dist` run packages the current source; no separate `package` step is needed. The installer supports English, Chinese and Japanese, installs for the current user without administrator access, lets you choose a directory, and creates desktop/Start Menu shortcuts. It does not launch the app automatically. Uninstall from Windows Installed Apps; user data is retained. Rebuilding the same version replaces its installer artifact.
+Output: `src-tauri/target/release/bundle/nsis/`. Every `dist` run packages the current source; no separate `package` step is needed. The installer supports English, Chinese and Japanese, installs for the current user without administrator access, lets you choose a directory, and creates desktop/Start Menu shortcuts. Uninstall from Windows Installed Apps; user data is retained. Rebuilding the same version replaces its installer artifact.
 
-For a portable folder, run `npm.cmd run package`: output is `release/DeskMate-0.5.0-win32-x64/`. Existing portable output is protected; choose another `DESKMATE_BUILD_NAME` to rebuild. Both editions share user data; quit one before opening the other.
+For a portable folder, run `npm.cmd run package`: output is `release/DeskMate-0.6.0-rust-win32-x64/`. Existing portable output is protected; choose another `DESKMATE_BUILD_NAME` to rebuild. Both editions share user data; quit one before opening the other.
 
-Configuration: `electron-builder.cjs`; workflow: `scripts/installer.cjs`; original generated icon: `scripts/icon.cjs`. Version comes from `package.json`. Uses electron-builder's NSIS target and never publishes automatically. The installer is unsigned and Windows may show an unknown publisher; configure code signing separately before public distribution. The built-in artwork's CC BY-NC 4.0 noncommercial restriction also applies to the installer.
+Build configuration: `src-tauri/tauri.conf.json` and `src-tauri/Cargo.toml`. Tauri generates NSIS installers; `scripts/package-rust.cjs` creates a portable folder with the EXE and assets. Version: 0.6.0. Publishing is never automatic. Signing and artwork license requirements remain unchanged.
 
 ## Data, development and testing
 
-New users: `%APPDATA%/DeskMate/`. If the new directory has no saved data and `%APPDATA%/Longling PC Assistant/assistant.json` exists, the app keeps using that legacy directory without moving or deleting it. `DESKMATE_DATA_DIR` takes priority; `LONGLING_DATA_DIR` remains compatible. `assistant.json` stores notes, reminders and settings; `.bak` holds the previous version for recovery. `git-*.json` stores commit indexes, `skins/` imported artwork, and `release-*.json` release caches. Quit the app and copy the entire directory to back up. `DESKMATE_DATA_DIR` selects an isolated directory.
+New users: `%APPDATA%/DeskMate/`. If it has no saved data and the legacy `%APPDATA%/Longling PC Assistant/` contains `assistant.sqlite`, `assistant.json` or its JSON backup, that directory remains in use without moving or deleting files. `DESKMATE_DATA_DIR` takes priority; `LONGLING_DATA_DIR` remains compatible.
+
+Notes, reminders, settings, repositories, skin bindings and commit indexes now live in **`assistant.sqlite` (SQLite)**. First launch imports `assistant.json` and every `git-*.json`, including removed repositories' archives, in one transaction. Failed imports roll back and can be retried after repairing the originals. Legacy JSON and `.bak` files remain unchanged as pre-migration snapshots and are no longer read or written after successful initialization. A damaged legacy main file can be imported from its valid `.bak`, with a recovery notice.
+
+Successful startup and clean exit produce a consistent `assistant.sqlite.bak` snapshot. On database corruption, a verified snapshot can be restored automatically while preserving `.damaged-*` evidence. Snapshots may predate the latest edits; normal writes use SQLite transactions. `skins/`, animation manifests (`skin.json`), and disposable release caches (`release-*.json`) remain files. Quit the app and copy the whole directory for backups. New database changes do not sync back to older JSON-based builds. See [database migration](docs/database-migration.md).
 
 ```powershell
 npm.cmd test
@@ -140,6 +144,6 @@ npm.cmd run test:pet    # Pet display modes, interactions and persistence
 npm.cmd run package
 ```
 
-Packaging uses the official Electron runtime and ASAR. Existing output directories are never overwritten. This is an unsigned portable Windows x64 build. Renderers are sandboxed with context isolation and restricted IPC. The scheduler persists before notifying to avoid duplicates; a crash in between can leave a notification only in the unread list. Notes and Git history are not uploaded.
+Packaged builds use a Rust executable and system WebView2. Keep the whole portable folder and install WebView2; NSIS includes a WebView2 bootstrapper. Existing portable output is protected. The frontend uses restricted Tauri commands.
 
-`src/` contains the app, `assets/` the licensed animations, `scripts/` build/integration tools, and `test/` functional checks. Prior research is kept in `docs/existing-projects.md`. Other Windows machines, very large repositories and every timezone/notification configuration have not been verified.
+`src-tauri/` contains the Rust backend, `src/renderer/` the UI, `assets/` the licensed animations, `scripts/` build/integration tools, and `test/` functional checks. Prior research is kept in `docs/existing-projects.md`. Other Windows machines, very large repositories and every timezone/notification configuration have not been verified.

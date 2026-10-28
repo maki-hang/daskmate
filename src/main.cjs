@@ -204,4 +204,5 @@ app.whenReady().then(() => {
 app.on('second-instance', () => openPanel());
 app.on('window-all-closed', () => {});
 app.on('activate', () => openPanel());
-app.on('before-quit', () => { petDrag?.end(); quitting = true; clearTimeout(positionTimer); disposeUsage(); disposeGit(); });
+app.on('before-quit', () => { petDrag?.end(); quitting = true; clearTimeout(positionTimer); gitIndex?.dispose(); disposeUsage(); disposeGit(); });
+app.on('will-quit', () => { try { store?.close(); } catch (error) { console.error('Database backup failed:', error.message); } });

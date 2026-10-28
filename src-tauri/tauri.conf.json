@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "DeskMate",
+  "version": "0.6.0",
+  "identifier": "com.deskmate.pc-assistant",
+  "build": {
+    "beforeDevCommand": "node scripts/prepare-tauri.cjs",
+    "beforeBuildCommand": "node scripts/prepare-tauri.cjs",
+    "frontendDist": "../.cache/tauri-web"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      { "label": "panel", "title": "DeskMate", "url": "index.html", "width": 1120, "height": 820, "minWidth": 900, "minHeight": 670, "visible": false, "create": false },
+      { "label": "pet", "title": "DeskMate Pet", "url": "pet.html", "width": 260, "height": 360, "decorations": false, "transparent": true, "shadow": false, "resizable": false, "skipTaskbar": true, "alwaysOnTop": true, "visible": false, "create": false }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' asset: http://asset.localhost data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src ipc: http://ipc.localhost",
+      "assetProtocol": { "enable": true, "scope": [] },
+      "capabilities": ["desktop"]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "icon": ["../build/icon.ico", "../build/icon.png"],
+    "resources": { "../assets/": "assets/", "../README.md": "README.md", "../README.en.md": "README.en.md", "../README.ja.md": "README.ja.md", "../LICENSE": "LICENSE", "../docs/rust-migration.md": "docs/rust-migration.md", "../docs/database-migration.md": "docs/database-migration.md", "../scripts/claude-statusline.cjs": "claude-statusline.cjs", "../src/core/data-directory.cjs": "data-directory.cjs" },
+    "windows": { "nsis": { "displayLanguageSelector": true, "languages": ["SimpChinese", "English", "Japanese"], "installMode": "currentUser" }, "webviewInstallMode": { "type": "downloadBootstrapper", "silent": true } }
+  }
+}

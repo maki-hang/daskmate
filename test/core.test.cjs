@@ -20,8 +20,10 @@ test('notes persist Unicode and distinct dates; invalid date cannot corrupt stor
   saveNote(store,{id:note.id,date:'2026-10-09',content:'更新后的内容'});
   assert.throws(()=>saveNote(store,{date:'2026-02-30',content:'无效日期'}));
   const reloaded=new Store(dir);assert.equal(reloaded.state.notes.length,2);assert.equal(reloaded.state.notes[0].content,'更新后的内容');
-  await fs.writeFile(store.file,'invalid-json');
+  reloaded.close();store.close();
+  await fs.writeFile(store.file,'invalid-sqlite');
   const recovered=new Store(dir);assert.equal(recovered.recovered,true);assert.equal(recovered.state.notes.length,2);
+  recovered.close();
 });
 test('reminders catch up after restart once, handle recurring occurrences and paused reminders',async()=>{
   const dir=await temp(),store=new Store(dir);

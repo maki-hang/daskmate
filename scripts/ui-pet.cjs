@@ -6,6 +6,7 @@ const root=path.resolve(__dirname,'..');
 (async()=>{
   const folder=await fs.mkdtemp(path.join(root,'.cache/pet-ui-')),data=path.join(folder,'data');
   const store=new Store(data);store.update(s=>{s.settings.language='zh-CN';s.settings.codexPath=path.join(folder,'missing-codex.exe');});
+  store.close();
   for(const agent of ['codex','claude'])await fs.writeFile(path.join(data,`release-${agent}.json`),JSON.stringify({agent,version:'0.0.0',body:'Fixture',url:`https://github.com/${agent==='codex'?'openai/codex':'anthropics/claude-code'}/releases/tag/v0.0.0`,checkedAt:Date.now()}));
   const output=path.join(root,'test-output/v4.1');await fs.mkdir(output,{recursive:true});
   const env={...process.env,DESKMATE_DATA_DIR:data,CLAUDE_CONFIG_DIR:path.join(folder,'claude')};delete env.ELECTRON_RUN_AS_NODE;

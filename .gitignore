@@ -3,3 +3,5 @@ release/
 .cache/
 test-output/
 *.log
+src-tauri/target/
+src-tauri/gen/

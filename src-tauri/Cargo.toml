@@ -1,0 +1,63 @@
+[package]
+name = "deskmate-desktop"
+version = "0.6.0"
+description = "DeskMate desktop companion"
+edition = "2021"
+rust-version = "1.90"
+default-run = "DeskMate"
+
+[lib]
+name = "deskmate"
+path = "src/lib.rs"
+
+[[bin]]
+name = "DeskMate"
+path = "src/main.rs"
+required-features = ["desktop"]
+
+[[bin]]
+name = "deskmate-protocol-fixture"
+path = "tests/support/protocol_fixture.rs"
+required-features = ["test-fixtures"]
+
+[features]
+default = ["desktop"]
+test-fixtures = []
+custom-protocol = ["tauri/custom-protocol"]
+desktop = ["dep:tauri", "dep:tauri-plugin-dialog", "dep:tauri-plugin-notification", "dep:tauri-plugin-opener", "dep:tauri-plugin-single-instance", "dep:tauri-plugin-autostart"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+rusqlite = { version = "0.37", features = ["bundled", "functions"] }
+uuid = { version = "1", features = ["v4"] }
+sha2 = "0.10"
+walkdir = "2"
+dirs = "6"
+fs2 = "0.4"
+tokio = { version = "1", features = ["rt-multi-thread", "process", "time", "io-util", "fs", "sync", "macros"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+semver = "1"
+url = "2"
+tauri = { version = "2", optional = true, features = ["tray-icon", "protocol-asset", "image-png", "image-ico"] }
+tauri-plugin-dialog = { version = "2", optional = true }
+tauri-plugin-notification = { version = "2", optional = true }
+tauri-plugin-opener = { version = "2", optional = true }
+tauri-plugin-single-instance = { version = "2", optional = true }
+tauri-plugin-autostart = { version = "2", optional = true }
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging", "Win32_UI_Input_KeyboardAndMouse", "Win32_Graphics_Gdi", "Win32_Globalization", "Win32_System_JobObjects", "Win32_System_Threading", "Win32_Security"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

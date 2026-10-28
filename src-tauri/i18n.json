@@ -1,0 +1,892 @@
+{
+  "petInteraction": [
+    "单击打开界面；左键长按拖动",
+    "Click to open; hold the left mouse button to drag",
+    "クリックで開く・左ボタン長押しでドラッグ"
+  ],
+  "petQuotaDisplay": [
+    "桌宠额度展示",
+    "Pet quota display",
+    "ペットの残量表示"
+  ],
+  "quotaAlways": [
+    "持续显示",
+    "Always visible",
+    "常に表示"
+  ],
+  "quotaHover": [
+    "鼠标悬停显示",
+    "Show on hover",
+    "ホバーで表示"
+  ],
+  "quotaAlwaysHint": [
+    "紧凑额度条，随时看见剩余进度。",
+    "A compact strip keeps remaining quotas in view.",
+    "コンパクトなバーで残量をいつでも確認。"
+  ],
+  "quotaHoverHint": [
+    "悬停时显示同款紧凑额度条，移开后收起。",
+    "Hover to show the same compact strip; move away to hide it.",
+    "ホバー時だけ同じコンパクトなバーを表示します。"
+  ],
+  "quotaDisplayHint": [
+    "设置立即生效，也可以在桌宠右键菜单中切换。",
+    "Changes apply immediately. You can also switch from the pet’s right-click menu.",
+    "すぐに反映されます。ペットの右クリックメニューでも切り替えられます。"
+  ],
+  "invalidQuotaDisplay": [
+    "请选择有效的额度展示方式。",
+    "Choose a valid quota display mode.",
+    "有効な残量表示モードを選択してください。"
+  ],
+  "brand": [
+    "桌伴",
+    "DeskMate",
+    "デスクメイト"
+  ],
+  "appTitle": [
+    "桌伴 · PC 助手",
+    "DeskMate · PC Assistant",
+    "デスクメイト · PC アシスタント"
+  ],
+  "tagline": [
+    "你的桌面小助手",
+    "Your desktop companion",
+    "デスクトップの小さな相棒"
+  ],
+  "workspace": [
+    "我的工作台",
+    "Workspace",
+    "ワークスペース"
+  ],
+  "usage": [
+    "Agent 用量",
+    "Agent usage",
+    "Agent 使用量"
+  ],
+  "git": [
+    "Git 足迹",
+    "Git history",
+    "Git 履歴"
+  ],
+  "agenda": [
+    "便签与提醒",
+    "Notes & reminders",
+    "メモとリマインダー"
+  ],
+  "settings": [
+    "形象与设置",
+    "Appearance & settings",
+    "外観と設定"
+  ],
+  "local": [
+    "数据保存在这台电脑",
+    "Your data stays on this PC",
+    "データはこの PC に保存"
+  ],
+  "localBadge": [
+    "本地助手",
+    "Local companion",
+    "ローカルアシスタント"
+  ],
+  "companion": [
+    "小事交给我，专心做喜欢的事。",
+    "Small things, taken care of.",
+    "小さなことは任せて、好きなことに集中。"
+  ],
+  "usageSub": [
+    "掌握额度、Token 与 Agent 的最新变化。",
+    "Keep track of quotas, tokens and agent releases.",
+    "クォータ、トークン、Agent の更新を確認。"
+  ],
+  "currentAgent": [
+    "当前 Agent",
+    "Current agent",
+    "現在の Agent"
+  ],
+  "refresh": [
+    "刷新",
+    "Refresh",
+    "更新"
+  ],
+  "loading": [
+    "读取中…",
+    "Loading…",
+    "読み込み中…"
+  ],
+  "unavailable": [
+    "暂不可用",
+    "Unavailable",
+    "取得できません"
+  ],
+  "connecting": [
+    "等待连接",
+    "Waiting for connection",
+    "接続待ち"
+  ],
+  "synced": [
+    "已同步",
+    "Up to date",
+    "同期済み"
+  ],
+  "stale": [
+    "快照待更新",
+    "Snapshot is stale",
+    "スナップショットが古くなっています"
+  ],
+  "hero": [
+    "余量心中有数，安心专注。",
+    "Know your limits. Keep your focus.",
+    "残量を把握して、作業に集中。"
+  ],
+  "heroLow": [
+    "额度快用完了，歇一会儿吧。",
+    "Running low. Time for a break.",
+    "残量が少なくなりました。ひと休みしましょう。"
+  ],
+  "companionAgent": [
+    "现在陪你工作的是 {agent}。",
+    "Working alongside {agent}.",
+    "{agent} と一緒に作業中。"
+  ],
+  "quotas": [
+    "{agent} 的额度",
+    "{agent} quotas",
+    "{agent} のクォータ"
+  ],
+  "usagePage": [
+    "打开用量页面 ↗",
+    "Open usage page ↗",
+    "使用量ページを開く ↗"
+  ],
+  "remaining": [
+    "剩余",
+    "Remaining",
+    "残り"
+  ],
+  "used": [
+    "已用 {n}%",
+    "{n}% used",
+    "{n}% 使用済み"
+  ],
+  "nextReset": [
+    "下次重置",
+    "Next reset",
+    "次回リセット"
+  ],
+  "expired": [
+    "窗口已到期，请刷新",
+    "Window expired; refresh",
+    "期限切れです。更新してください"
+  ],
+  "noQuota": [
+    "未取得额度数据",
+    "No quota data",
+    "クォータ未取得"
+  ],
+  "quotaHelp": [
+    "请确认已安装并登录对应 Agent。",
+    "Make sure this agent is installed and signed in.",
+    "Agent のインストールとログインを確認してください。"
+  ],
+  "usageHint": [
+    "每分钟更新。缺失数据以 — 表示，不记为 0。",
+    "Refreshes every minute. Missing data is shown as —, never zero.",
+    "毎分更新。欠損データは 0 ではなく — と表示します。"
+  ],
+  "accountSource": [
+    "来源：Codex 官方账户接口；每日统计遵循服务端日期。",
+    "Source: official Codex account API; daily totals follow service dates.",
+    "出典：Codex 公式アカウント API。日別集計はサービス側の日付に従います。"
+  ],
+  "localSource": [
+    "来源：Claude 本机日志（含缓存）；额度来自可选状态行快照。",
+    "Source: local Claude logs, including cache tokens; quotas use optional status-line snapshots.",
+    "出典：Claude のローカルログ（キャッシュ含む）。クォータは任意のステータスライン連携から取得。"
+  ],
+  "todayTokens": [
+    "今日 Token",
+    "Tokens today",
+    "今日のトークン"
+  ],
+  "totalTokens": [
+    "累计 Token",
+    "Total tokens",
+    "累計トークン"
+  ],
+  "tokenHint": [
+    "账户累计与本机日志是不同统计范围，不能直接横向比较。",
+    "Account totals and local logs cover different scopes.",
+    "アカウント集計とローカルログでは対象範囲が異なります。"
+  ],
+  "resetCards": [
+    "可用重置卡",
+    "Available resets",
+    "利用可能なリセット"
+  ],
+  "resetUnknown": [
+    "服务未返回重置卡信息",
+    "Reset credits were not returned",
+    "リセット情報は提供されていません"
+  ],
+  "resetHint": [
+    "仅展示数量与到期时间；兑换请前往 Codex。",
+    "Count and expiry only; redeem in Codex.",
+    "枚数と有効期限を表示。利用は Codex から行ってください。"
+  ],
+  "expires": [
+    "到期 {date}",
+    "Expires {date}",
+    "有効期限 {date}"
+  ],
+  "noExpiry": [
+    "未提供到期时间",
+    "Expiry not provided",
+    "有効期限は未提供"
+  ],
+  "noDetails": [
+    "仅提供数量",
+    "Count only",
+    "枚数のみ"
+  ],
+  "hours": [
+    "{n} 小时",
+    "{n} hours",
+    "{n} 時間"
+  ],
+  "days": [
+    "{n} 天",
+    "{n} days",
+    "{n} 日"
+  ],
+  "minutes": [
+    "{n} 分钟",
+    "{n} minutes",
+    "{n} 分"
+  ],
+  "window": [
+    "额度窗口",
+    "Quota window",
+    "クォータ期間"
+  ],
+  "shortHours": [
+    "{n}h",
+    "{n}h",
+    "{n}時間"
+  ],
+  "shortDays": [
+    "{n}d",
+    "{n}d",
+    "{n}日"
+  ],
+  "shortReset": [
+    "重置卡 {n}",
+    "Resets {n}",
+    "リセット {n}"
+  ],
+  "releases": [
+    "Agent 更新",
+    "Agent updates",
+    "Agent の更新"
+  ],
+  "releaseScope": [
+    "检查 Codex CLI / Claude Code 的稳定版本，每 6 小时更新。",
+    "Checks stable Codex CLI / Claude Code releases every 6 hours.",
+    "Codex CLI / Claude Code の安定版を 6 時間ごとに確認。"
+  ],
+  "updateAvailable": [
+    "发现新版本 {version}",
+    "New version {version}",
+    "新バージョン {version}"
+  ],
+  "latestRelease": [
+    "最新发布 {version}",
+    "Latest release {version}",
+    "最新リリース {version}"
+  ],
+  "installed": [
+    "本机 {version}",
+    "Installed {version}",
+    "インストール済み {version}"
+  ],
+  "unknownVersion": [
+    "未检测到本机版本",
+    "Installed version not detected",
+    "インストール済みバージョン不明"
+  ],
+  "latest": [
+    "已是最新或更新版本",
+    "Up to date or newer",
+    "最新またはそれ以降のバージョン"
+  ],
+  "checkUpdates": [
+    "检查更新",
+    "Check updates",
+    "更新を確認"
+  ],
+  "translatedLog": [
+    "查看翻译日志 ↗",
+    "Read release notes ↗",
+    "翻訳した更新履歴 ↗"
+  ],
+  "original": [
+    "官方原文 ↗",
+    "Official original ↗",
+    "公式の原文 ↗"
+  ],
+  "translationHint": [
+    "按当前语言通过 Google 网页翻译打开官方日志，不会自动升级 Agent。",
+    "Opens official notes in your language via Google website translation. Agents are not upgraded automatically.",
+    "Google のウェブ翻訳で公式履歴を現在の言語で開きます。Agent は自動更新しません。"
+  ],
+  "releaseUnavailable": [
+    "暂时无法检查更新，请稍后重试。",
+    "Could not check updates. Try again later.",
+    "更新を確認できません。後でもう一度お試しください。"
+  ],
+  "offlineCache": [
+    "离线缓存，请检查网络后刷新",
+    "Cached result; reconnect and refresh",
+    "キャッシュ表示。接続後に更新してください"
+  ],
+  "gitSub": [
+    "把不同仓库里的进展，放在同一条时间线上。",
+    "Your progress across repositories, in one timeline.",
+    "複数リポジトリの進捗を、ひとつのタイムラインに。"
+  ],
+  "scan": [
+    "扫描目录",
+    "Scan folder",
+    "フォルダーを検索"
+  ],
+  "addRepo": [
+    "＋ 添加仓库",
+    "＋ Add repository",
+    "＋ リポジトリを追加"
+  ],
+  "commits": [
+    "提交记录",
+    "Commits",
+    "コミット"
+  ],
+  "mine": [
+    "仅本地作者",
+    "Local author only",
+    "ローカルの作成者のみ"
+  ],
+  "allAuthors": [
+    "所有作者",
+    "All authors",
+    "すべての作成者"
+  ],
+  "allRepos": [
+    "全部仓库",
+    "All repositories",
+    "すべてのリポジトリ"
+  ],
+  "searchCommits": [
+    "搜索内容、作者、邮箱或哈希…",
+    "Search message, author, email or hash…",
+    "内容、作成者、メール、ハッシュを検索…"
+  ],
+  "commitDate": [
+    "提交日期 YYYY-MM-DD",
+    "Commit date YYYY-MM-DD",
+    "コミット日 YYYY-MM-DD"
+  ],
+  "gitHint": [
+    "默认按各仓库 git user.email 匹配作者；缺少邮箱时使用 user.name。后台每分钟收录，本地未获取的提交不在范围内。",
+    "Matches each repository’s git user.email, falling back to user.name. Indexed every minute; unfetched commits are excluded.",
+    "各リポジトリの git user.email（未設定時は user.name）で絞り込み。毎分収録。未取得のコミットは対象外。"
+  ],
+  "identityMissing": [
+    "部分仓库未配置作者，默认筛选下不会显示其提交。",
+    "Some repositories have no configured identity; their commits are hidden by the default filter.",
+    "作成者未設定のリポジトリは、既定の絞り込みでは非表示になります。"
+  ],
+  "noCommits": [
+    "没有匹配的提交",
+    "No matching commits",
+    "該当するコミットはありません"
+  ],
+  "addFirstRepo": [
+    "从添加一个仓库开始",
+    "Add your first repository",
+    "リポジトリを追加してください"
+  ],
+  "adjustFilter": [
+    "可切换为所有作者或调整筛选条件。",
+    "Try all authors or adjust your filters.",
+    "すべての作成者に切り替えるか、条件を変更してください。"
+  ],
+  "scanHint": [
+    "选择仓库，或扫描代码目录。",
+    "Choose a repository or scan a code folder.",
+    "リポジトリを選択するか、コードフォルダーを検索します。"
+  ],
+  "indexing": [
+    "正在扫描与索引…",
+    "Scanning and indexing…",
+    "検索・索引作成中…"
+  ],
+  "reposAdded": [
+    "已添加 {n} 个仓库",
+    "Added {n} repositories",
+    "{n} 件のリポジトリを追加"
+  ],
+  "scanWarnings": [
+    "部分目录未能读取或不是有效仓库。",
+    "Some folders were unreadable or not valid repositories.",
+    "読み取れない、または無効なリポジトリのフォルダーがあります。"
+  ],
+  "count": [
+    "{n} 条",
+    "{n} items",
+    "{n} 件"
+  ],
+  "pages": [
+    "第 {p} / {n} 页",
+    "Page {p} / {n}",
+    "{p} / {n} ページ"
+  ],
+  "previous": [
+    "上一页",
+    "Previous",
+    "前へ"
+  ],
+  "next": [
+    "下一页",
+    "Next",
+    "次へ"
+  ],
+  "commitDetail": [
+    "提交详情",
+    "Commit detail",
+    "コミット詳細"
+  ],
+  "copyHash": [
+    "复制提交哈希",
+    "Copy commit hash",
+    "コミットハッシュをコピー"
+  ],
+  "copied": [
+    "已复制",
+    "Copied",
+    "コピーしました"
+  ],
+  "removeRepo": [
+    "移除此仓库？仓库文件和 Git 历史会保留。",
+    "Remove this repository from the list? Files and Git history will be preserved.",
+    "一覧から削除しますか？ファイルと Git 履歴は保持されます。"
+  ],
+  "agendaSub": [
+    "记下想法，选择时间，需要时让桌伴提醒你。",
+    "Write a note, set a time, and add a reminder if needed.",
+    "メモを書いて時刻を指定。必要ならリマインダーも。"
+  ],
+  "newNote": [
+    "记下一点什么",
+    "Write something down",
+    "メモを書こう"
+  ],
+  "editNote": [
+    "编辑便签",
+    "Edit note",
+    "メモを編集"
+  ],
+  "content": [
+    "便签内容",
+    "Note content",
+    "メモの内容"
+  ],
+  "notePlaceholder": [
+    "有什么值得记住？",
+    "What would you like to remember?",
+    "覚えておきたいことは？"
+  ],
+  "date": [
+    "日期",
+    "Date",
+    "日付"
+  ],
+  "time": [
+    "时间（时:分:秒）",
+    "Time (hh:mm:ss)",
+    "時刻（時:分:秒）"
+  ],
+  "remind": [
+    "到点提醒我",
+    "Remind me at this time",
+    "この時刻に通知"
+  ],
+  "repeat": [
+    "重复",
+    "Repeat",
+    "繰り返し"
+  ],
+  "none": [
+    "仅一次",
+    "Once",
+    "一度のみ"
+  ],
+  "daily": [
+    "每天",
+    "Daily",
+    "毎日"
+  ],
+  "weekly": [
+    "每周",
+    "Weekly",
+    "毎週"
+  ],
+  "save": [
+    "保存",
+    "Save",
+    "保存"
+  ],
+  "saveNote": [
+    "＋ 保存便签",
+    "＋ Save note",
+    "＋ メモを保存"
+  ],
+  "saved": [
+    "便签已保存",
+    "Note saved",
+    "メモを保存しました"
+  ],
+  "cancel": [
+    "取消",
+    "Cancel",
+    "キャンセル"
+  ],
+  "cancelEdit": [
+    "取消编辑",
+    "Cancel editing",
+    "編集をキャンセル"
+  ],
+  "edit": [
+    "编辑",
+    "Edit",
+    "編集"
+  ],
+  "delete": [
+    "删除",
+    "Delete",
+    "削除"
+  ],
+  "deleteNote": [
+    "删除这条便签及关联提醒？",
+    "Delete this note and its reminder?",
+    "このメモと関連するリマインダーを削除しますか？"
+  ],
+  "emptyDay": [
+    "这一天还是一张白纸",
+    "A blank page for this day",
+    "この日はまだ白紙です"
+  ],
+  "emptyNote": [
+    "写下第一条便签吧。",
+    "Start with your first note.",
+    "最初のメモを書いてみましょう。"
+  ],
+  "today": [
+    "今天",
+    "Today",
+    "今日"
+  ],
+  "monthPrevious": [
+    "上个月",
+    "Previous month",
+    "前の月"
+  ],
+  "monthNext": [
+    "下个月",
+    "Next month",
+    "次の月"
+  ],
+  "markedDays": [
+    "有便签或提醒的日子",
+    "Days with notes or reminders",
+    "メモ・通知がある日"
+  ],
+  "allNotes": [
+    "全部便签",
+    "All notes",
+    "すべてのメモ"
+  ],
+  "selectedDay": [
+    "所选日期",
+    "Selected day",
+    "選択した日"
+  ],
+  "unread": [
+    "未读提醒",
+    "Unread reminders",
+    "未読の通知"
+  ],
+  "ack": [
+    "全部标为已读",
+    "Mark all as read",
+    "すべて既読にする"
+  ],
+  "due": [
+    "已到时间",
+    "Due now",
+    "通知時刻です"
+  ],
+  "completed": [
+    "已完成",
+    "Completed",
+    "完了"
+  ],
+  "pending": [
+    "等待提醒",
+    "Scheduled",
+    "通知待ち"
+  ],
+  "paused": [
+    "已暂停",
+    "Paused",
+    "一時停止中"
+  ],
+  "pause": [
+    "暂停",
+    "Pause",
+    "一時停止"
+  ],
+  "enable": [
+    "启用",
+    "Enable",
+    "有効にする"
+  ],
+  "snooze": [
+    "10 分钟后",
+    "In 10 minutes",
+    "10 分後"
+  ],
+  "lastFired": [
+    "上次提醒 {date}",
+    "Last notified {date}",
+    "前回の通知 {date}"
+  ],
+  "reminderHint": [
+    "使用本机时区，精确到秒。关闭面板后仍提醒；程序退出期间的提醒将在下次启动时补发。",
+    "Uses your local timezone, down to seconds. Reminders run with the panel closed; missed reminders catch up on launch.",
+    "PC のタイムゾーンで秒まで指定。パネルを閉じても通知し、終了中の通知は次回起動時に表示します。"
+  ],
+  "unsaved": [
+    "有未保存的修改，放弃这些修改？",
+    "Discard unsaved changes?",
+    "未保存の変更を破棄しますか？"
+  ],
+  "settingsSub": [
+    "让每个 Agent 都有自己的小伙伴。",
+    "Give each agent its own companion.",
+    "Agent ごとに、お気に入りの相棒を。"
+  ],
+  "language": [
+    "语言 / Language / 言語",
+    "Language / 语言 / 言語",
+    "言語 / Language / 语言"
+  ],
+  "languageHint": [
+    "界面、桌宠、托盘和说明文档同步切换。",
+    "Applies to the UI, pet, tray and documentation.",
+    "画面、ペット、トレイ、説明書に適用します。"
+  ],
+  "appearance": [
+    "{agent} 的专属形象",
+    "Appearance for {agent}",
+    "{agent} の外観"
+  ],
+  "importSkin": [
+    "＋ 导入动画包",
+    "＋ Import animation pack",
+    "＋ アニメーションを追加"
+  ],
+  "skinHint": [
+    "点击形象，绑定到当前 Agent；切换 Agent 后可分别设置。也可导入包含本地 GIF / WebP / PNG / APNG 的 skin.json。",
+    "Choose a character for the current agent; each agent keeps its own choice. You can also import a skin.json with local GIF / WebP / PNG / APNG assets.",
+    "クリックして現在の Agent に設定します。Agent ごとに選択を保持します。GIF / WebP / PNG / APNG を含む skin.json も追加できます。"
+  ],
+  "skinImported": [
+    "动画包已导入，点击即可应用",
+    "Animation pack imported; click to apply",
+    "追加しました。クリックで適用できます"
+  ],
+  "artwork": [
+    "内置角色 · 素材出处 ↗",
+    "Built-in characters · Artwork source ↗",
+    "内蔵キャラクター · 素材の出典 ↗"
+  ],
+  "whiteDragon": [
+    "白发龙娘",
+    "White dragon girl",
+    "白髪のドラゴン娘"
+  ],
+  "general": [
+    "通用设置",
+    "General",
+    "一般"
+  ],
+  "alwaysOnTop": [
+    "桌宠置顶",
+    "Keep pet on top",
+    "ペットを最前面に表示"
+  ],
+  "login": [
+    "开机启动",
+    "Launch at login",
+    "ログイン時に起動"
+  ],
+  "loginHint": [
+    "仅打包版支持",
+    "Available in packaged builds",
+    "パッケージ版で利用可能"
+  ],
+  "codexPath": [
+    "Codex 可执行文件",
+    "Codex executable",
+    "Codex 実行ファイル"
+  ],
+  "autoDetect": [
+    "自动检测",
+    "Auto-detect",
+    "自動検出"
+  ],
+  "choose": [
+    "选择文件",
+    "Choose file",
+    "ファイルを選択"
+  ],
+  "dataFolder": [
+    "本地数据目录",
+    "Local data directory",
+    "ローカルデータフォルダー"
+  ],
+  "openFolder": [
+    "打开文件夹",
+    "Open folder",
+    "フォルダーを開く"
+  ],
+  "readme": [
+    "使用说明",
+    "User guide",
+    "使い方"
+  ],
+  "readmeHint": [
+    "包含额度接入、资源格式和素材许可。",
+    "Quota setup, animation format and artwork license.",
+    "クォータ連携、アニメーション形式、素材ライセンス。"
+  ],
+  "open": [
+    "打开",
+    "Open",
+    "開く"
+  ],
+  "close": [
+    "关闭",
+    "Close",
+    "閉じる"
+  ],
+  "confirm": [
+    "确认",
+    "Confirm",
+    "確認"
+  ],
+  "notice": [
+    "提示",
+    "Notice",
+    "確認"
+  ],
+  "openApp": [
+    "打开桌伴",
+    "Open DeskMate",
+    "デスクメイトを開く"
+  ],
+  "switchAgent": [
+    "切换 Agent",
+    "Switch agent",
+    "Agent を切り替え"
+  ],
+  "showPet": [
+    "显示桌宠",
+    "Show pet",
+    "ペットを表示"
+  ],
+  "hidePet": [
+    "隐藏桌宠",
+    "Hide pet",
+    "ペットを隠す"
+  ],
+  "quit": [
+    "退出桌伴",
+    "Quit DeskMate",
+    "デスクメイトを終了"
+  ],
+  "reminderTitle": [
+    "桌伴提醒",
+    "DeskMate reminder",
+    "デスクメイトの通知"
+  ],
+  "selectRepo": [
+    "选择 Git 仓库",
+    "Choose Git repository",
+    "Git リポジトリを選択"
+  ],
+  "selectScan": [
+    "扫描文件夹中的 Git 仓库",
+    "Scan folder for Git repositories",
+    "Git リポジトリを検索するフォルダー"
+  ],
+  "selectSkin": [
+    "导入动画包的 skin.json",
+    "Import animation pack skin.json",
+    "アニメーションの skin.json を選択"
+  ],
+  "skinFiles": [
+    "动画资源包",
+    "Animation pack",
+    "アニメーションパック"
+  ],
+  "selectCodex": [
+    "选择 Codex 可执行文件",
+    "Select Codex executable",
+    "Codex 実行ファイルを選択"
+  ],
+  "drag": [
+    "拖动移动",
+    "Drag to move",
+    "ドラッグして移動"
+  ],
+  "petAlt": [
+    "桌面宠物",
+    "Desktop pet",
+    "デスクトップペット"
+  ],
+  "recovered": [
+    "已从最近备份恢复，请检查数据。",
+    "Recovered from the latest backup. Please check your data.",
+    "最新のバックアップから復元しました。内容を確認してください。"
+  ],
+  "error": [
+    "操作未完成，请检查输入、网络或本机 Agent 配置。",
+    "Could not complete the operation. Check your input, network or local agent setup.",
+    "操作を完了できません。入力、接続、Agent の設定を確認してください。"
+  ],
+  "invalidTime": [
+    "请输入有效时间（时:分:秒）。",
+    "Enter a valid time (hh:mm:ss).",
+    "有効な時刻（時:分:秒）を入力してください。"
+  ],
+  "usageUnavailable": [
+    "无法读取额度，请检查 Agent 登录状态。",
+    "Cannot read quotas; check agent sign-in.",
+    "クォータを取得できません。ログイン状態を確認してください。"
+  ],
+  "usageTimeout": [
+    "额度读取超时，请稍后重试。",
+    "Quota request timed out. Try again later.",
+    "クォータの取得がタイムアウトしました。後でお試しください。"
+  ]
+}

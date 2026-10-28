@@ -2,13 +2,15 @@
 
 **中文** · [English](README.en.md) · [日本語](README.ja.md)
 
+**0.6.0 技术栈：Tauri 2 + Rust + WebView2 + SQLite。** 保留原 HTML/CSS/JavaScript 界面。运行版不需要 Node.js；开发和迁移细节见 [Rust 迁移说明](docs/rust-migration.md)。
+
 8 位可选的桌面小伙伴：查看 AI Agent 用量、收集 Git 提交、按日期写便签、到点提醒。桌面始终只有一个宠物；切换 Agent 时，数据和绑定形象同步切换。当前目标平台为 Windows x64。
 
 ## 运行
 
-打包版：打开 `release/DeskMate-0.5.0-win32-x64/DeskMate.exe`，整个目录需一起保留。如果旧版正在运行，请先从旧版托盘「退出桌伴」，再启动新版。沿用原数据目录，旧便签和提醒会自动迁移。
+打包版：打开 `release/DeskMate-0.6.0-rust-win32-x64/DeskMate.exe`，整个目录需一起保留。如果旧版正在运行，请先从旧版托盘「退出桌伴」，再启动新版。沿用原数据目录，旧便签和提醒会自动迁移。
 
-源码版需要 Node.js 22.12+、npm 和 Git：
+源码版需要 Node.js 22.13+、npm、Git、Rust stable（1.90+）、C++ Build Tools、Windows SDK 与 WebView2：
 
 ```powershell
 npm.cmd ci
@@ -69,7 +71,7 @@ npm.cmd start
 
 美术许可为 **CC BY-NC 4.0**：保留署名和声明，**仅限非商业用途**，不授予原角色或品牌权利。每个资源包均附有完整的 `UPSTREAM-LICENSE.txt` 与 `UPSTREAM-NOTICE.md`，安装包也包含这些文件。
 
-Electron、Git 本地命令、官方用量接口与现成动画均予以复用；Git/便签/提醒和管理界面为本项目实现。早期调研见 `docs/existing-projects.md`。
+Tauri、Rust、SQLite、Git 本地命令、官方用量接口与现成动画均予以复用；Git/便签/提醒和管理界面为本项目实现。早期调研见 `docs/existing-projects.md`。
 
 ## 自定义动画
 
@@ -94,54 +96,56 @@ Electron、Git 本地命令、官方用量接口与现成动画均予以复用�
 
 ## Claude 可选额度接入
 
-需安装 Node.js。将下面设置合并到 Claude Code 配置，路径改为实际位置。如已有状态行，请保留原配置并自行串联，不直接覆盖。
+将下面设置合并到 Claude Code 配置，路径改成实际程序位置。使用 Rust 内置命令，无需安装 Node.js。已有状态行时保留原配置并自行串联。
 
 ```json
 {
   "statusLine": {
     "type": "command",
-    "command": "node \"E:/brain-storming/deskmate/scripts/claude-statusline.cjs\""
+    "command": "\"C:/DeskMate/DeskMate.exe\" --claude-statusline"
   }
 }
 ```
 
-打包版脚本位于 `resources/claude-statusline.cjs`。它仅保存额度数字、重置时间和更新时间，输出可见状态行，不读取凭据或发送额外联网查询。两边应使用同一个数据目录。Claude 未报告的窗口不显示；快照超过 10 分钟会标明陈旧，窗口到期后需在 Claude 中产生新活动更新。
-
 ## 生成 Windows 安装包
 
-在项目目录 `E:\brain-storming\deskmate` 打开 PowerShell。需要 Windows x64、Node.js 22.12+ 和 npm；首次构建需要联网下载 Electron 与 NSIS 工具。
+在项目目录 `E:\brain-storming\deskmate` 打开 PowerShell。构建环境要求同源码运行；首次构建需联网获取 Rust 依赖和 NSIS 工具。
 
 ```powershell
 npm.cmd ci
 npm.cmd run dist
 ```
 
-产物：`release/installers/DeskMate-Setup-0.5.0-x64.exe`。`dist` 每次从当前源码重新打包，无需先运行 `package`。安装程序支持中文、英语、日语，按当前用户安装，无需管理员权限，可以选择安装目录，并创建桌面与开始菜单快捷方式。安装完不会自动启动；通过快捷方式打开即可。可在 Windows「已安装的应用」中卸载，卸载保留用户数据。同版本重复构建会更新对应安装包文件。
+产物：`src-tauri/target/release/bundle/nsis/`。`dist` 每次从当前源码重新打包，无需先运行 `package`。安装程序支持中文、英语、日语，按当前用户安装，无需管理员权限，可以选择安装目录，并创建桌面与开始菜单快捷方式。安装后可通过快捷方式启动。可在 Windows「已安装的应用」中卸载，卸载保留用户数据。同版本重复构建会更新对应安装包文件。
 
-仅需要免安装目录时运行 `npm.cmd run package`，输出 `release/DeskMate-0.5.0-win32-x64/`。该命令不覆盖已有目录，重新生成可指定 `DESKMATE_BUILD_NAME` 为新的目录名。安装版与免安装版共用同一用户数据目录，切换版本前先退出另一版。
+仅需要免安装目录时运行 `npm.cmd run package`，输出 `release/DeskMate-0.6.0-rust-win32-x64/`。该命令不覆盖已有目录，重新生成可指定 `DESKMATE_BUILD_NAME` 为新的目录名。安装版与免安装版共用同一用户数据目录，切换版本前先退出另一版。
 
-构建配置：`electron-builder.cjs`；流程：`scripts/installer.cjs`；图标由 `scripts/icon.cjs` 原创生成。版本号统一取自 `package.json`。使用 electron-builder 的 NSIS 目标；源码与产物不会自动发布。当前为未签名安装包，Windows 可能显示未知发布者，正式分发前可另行配置代码签名。内置角色的 CC BY-NC 4.0 非商业限制仍适用于安装包。
+构建配置：`src-tauri/tauri.conf.json` 和 `src-tauri/Cargo.toml`；使用 Tauri 的 NSIS 安装器。免安装目录由 `scripts/package-rust.cjs` 生成，包含 EXE 与素材。版本为 0.6.0。不会自动发布。现有签名和内置素材的非商业许可条件仍需遵守。
 
 ## 本地数据与验证
 
-新用户默认数据目录为 `%APPDATA%/DeskMate/`；如果检测到旧版 `%APPDATA%/Longling PC Assistant/assistant.json` 且新目录尚无数据，会继续使用旧目录以保留便签、提醒、设置与动画资源（不移动或删除原数据）。`DESKMATE_DATA_DIR` 优先，旧变量 `LONGLING_DATA_DIR` 仍兼容。数据目录可在设置中打开。便签、提醒和配置存入 `assistant.json`，保留上一份 `.bak`，损坏时尝试恢复并保留损坏副本。提交索引存入 `git-*.json`，自定义角色位于 `skins/`，更新缓存为 `release-*.json`。备份时退出程序并复制整个目录。环境变量 `DESKMATE_DATA_DIR` 可指定隔离目录。
+新用户默认数据目录为 `%APPDATA%/DeskMate/`；新目录尚无数据时，如果旧版 `%APPDATA%/Longling PC Assistant/` 存在 `assistant.sqlite`、`assistant.json` 或其 JSON 备份，会继续使用旧目录，不移动或删除原数据。`DESKMATE_DATA_DIR` 优先，旧变量 `LONGLING_DATA_DIR` 仍兼容。数据目录可在设置中打开。
+
+便签、提醒、设置、仓库、形象绑定与 Git 提交索引统一存入 **SQLite 数据库 `assistant.sqlite`**。首次启动会在单个事务中导入 `assistant.json` 和全部 `git-*.json`（含已移除仓库的存档）；导入失败会回滚，修复原文件后可以重试。旧 JSON 和 `.bak` 保持原样，仅为迁移前快照；成功导入后不再读写它们。旧主 JSON 损坏时尝试读取旧 `.bak`，并显示恢复提示。数据库初始化后不会因旧 JSON 变化而重复导入。
+
+启动成功及正常退出时生成一致的 `assistant.sqlite.bak` 快照；数据库损坏时尝试验证并恢复该快照，同时保留 `.damaged-*` 损坏副本。快照不是逐次修改备份，可能落后于最后一次修改；日常提交由 SQLite 事务保证一致性。自定义角色文件仍在 `skins/`，动画包描述仍为 `skin.json`，可重新获取的更新缓存仍为 `release-*.json`。备份时退出程序并复制整个目录。迁移后的新增数据不会同步回旧版程序。实现和恢复说明见 [数据库迁移](docs/database-migration.md)。
 
 提醒先写入持久状态再发通知，以避免重复；极端情况下若进程恰在两步间崩溃，可从未读列表找回。界面使用隔离 preload 与受限 IPC，不发送便签、Git 历史或提醒到服务器。
 
 ```powershell
 npm.cmd test           # 功能测试，含真实临时 Git 仓库
 npm.cmd run test:skins # Built-in artwork, languages and per-agent bindings
-npm.cmd run test:ui    # 隔离数据的 Electron 流程测试与截图
+npm.cmd run test:ui    # 隔离数据的 Tauri / WebView2 流程测试与截图
 npm.cmd run test:pet    # 桌宠展示模式、交互和持久化
 npm.cmd run package    # Windows x64 可运行目录
 ```
 
-打包采用 Electron 官方预构建运行时与 ASAR 归档；首次需成功下载运行时。为保护已有版本，输出目录存在时不会覆盖，可设置 `DESKMATE_BUILD_NAME` 为另一个目录名后重新构建。打包版为本地免安装目录，尚未做商业代码签名。
+打包版使用 Rust 程序及系统 WebView2。免安装目录需整份保留，并预装 WebView2；NSIS 安装版带有 WebView2 引导安装。已有免安装目录不会覆盖。前端通过受限 Tauri 命令调用后台。
 
 ## 目录
 
 - `docs/pc-assistant-acceptance.md`：当前 PC 助手验收条件；`docs/mvp.md` 保留早期需求。
 - `docs/existing-projects.md`：候选项目、资料链接及待验证差异。
-- `src/`：桌面主进程、本地数据模块与界面。
+- `src-tauri/`：Rust 后台、SQLite 和 Tauri 窗口；`src/renderer/`：保留的界面；`src/core/`：历史兼容回归实现。
 - `assets/`：动画及原始许可。
 - `test/`、`scripts/`：验证、打包与可选状态行桥接。

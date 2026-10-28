@@ -14,6 +14,7 @@ const root = path.resolve(__dirname, '..');
     s.settings.codexPath = path.join(folder, 'missing-codex.exe');
     s.settings.skins = { codex: 'white-dragon', claude: custom.id };
   });
+  store.close();
   for (const agent of ['codex', 'claude']) await fs.writeFile(path.join(data, `release-${agent}.json`), JSON.stringify({ agent, version: '0.0.0', body: 'Fixture', url: `https://github.com/${agent === 'codex' ? 'openai/codex' : 'anthropics/claude-code'}/releases/tag/v0.0.0`, checkedAt: Date.now() }));
   const packaged = Boolean(process.env.DESKMATE_TEST_EXE);
   const output = path.join(root, 'test-output/v5', packaged ? 'packaged' : 'source');

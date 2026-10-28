@@ -1,20 +1,31 @@
 {
   "name": "deskmate",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "description": "DeskMate — AI agent usage, Git history, notes and reminders",
   "main": "src/main.cjs",
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
-    "start": "electron .",
-    "test": "node --test test/*.test.cjs",
-    "test:ui": "node scripts/ui-smoke.cjs",
-    "test:pet": "node scripts/ui-pet.cjs",
-    "test:skins": "node scripts/ui-skins.cjs",
-    "package": "node scripts/package.cjs",
-    "dist": "node scripts/installer.cjs"
+    "start": "node scripts/rust.cjs dev",
+    "test": "node scripts/rust.cjs test --features test-fixtures",
+    "test:core": "node scripts/rust.cjs test --no-default-features --features test-fixtures",
+    "test:ui": "node scripts/ui-tauri.cjs",
+    "test:pet": "node scripts/ui-tauri.cjs pet",
+    "test:skins": "node scripts/ui-tauri.cjs skins",
+    "check": "node scripts/rust.cjs clippy --all-targets --features test-fixtures -- -D warnings",
+    "package": "node scripts/package-rust.cjs",
+    "dist": "node scripts/rust.cjs build",
+    "electron:start": "electron .",
+    "electron:test": "node --test test/*.test.cjs",
+    "electron:test:ui": "node scripts/ui-smoke.cjs",
+    "electron:test:pet": "node scripts/ui-pet.cjs",
+    "electron:test:skins": "node scripts/ui-skins.cjs"
   },
   "devDependencies": {
     "@electron/asar": "4.3.1",
+    "@tauri-apps/cli": "2.12.4",
     "electron": "44.7.0",
     "electron-builder": "26.15.3",
     "playwright": "1.64.0"

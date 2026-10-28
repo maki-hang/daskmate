@@ -46,7 +46,7 @@ function readCommits(cwd) {
   });
 }
 class GitIndex {
-  constructor(store) { this.store = store; this.busy = null; this.cache = new Map(); }
+  constructor(store) { this.store = store; this.busy = null; this.disposed = false; }
   async add(directory) {
     const bare = await git(directory, ['rev-parse', '--is-bare-repository']);
     const root = await fs.realpath(bare === 'true' ? directory : await git(directory, ['rev-parse', '--show-toplevel']));
@@ -55,9 +55,7 @@ class GitIndex {
     return id;
   }
   async records(repo) {
-    if (this.cache.has(repo.id)) return this.cache.get(repo.id);
-    try { const rows = JSON.parse(await fs.readFile(path.join(this.store.directory, 'git-' + repo.id + '.json'), 'utf8')); this.cache.set(repo.id, rows); return rows; }
-    catch (e) { if (e.code === 'ENOENT') return []; throw new Error('提交缓存损坏，请保留备份并重新索引'); }
+    return this.store.database.records(repo.id);
   }
   async sync() {
     if (this.busy) return this.busy;
@@ -66,36 +64,18 @@ class GitIndex {
   }
   async performSync() {
     for (const repo of [...this.store.state.repositories]) {
+      if (this.disposed) break;
       try {
         const identity = { email: await git(repo.path, ['config', 'user.email']).catch(() => ''), name: await git(repo.path, ['config', 'user.name']).catch(() => '') };
-        this.store.update(s => { const r = s.repositories.find(x => x.id === repo.id); if (r) r.identity = identity; });
         const current = await readCommits(repo.path);
-        const records = new Map((await this.records(repo)).map(c => [c.hash, c]));
-        for (const c of current) records.set(c.hash, c);
-        const rows = [...records.values()].sort((a, b) => b.date.localeCompare(a.date));
-        const file = path.join(this.store.directory, 'git-' + repo.id + '.json');
-        await fs.writeFile(file + '.tmp', JSON.stringify(rows)); await fs.rename(file + '.tmp', file);
-        this.cache.set(repo.id, rows);
-        this.store.update(s => { const r = s.repositories.find(x => x.id === repo.id); if (r) Object.assign(r, { count: rows.length, syncedAt: new Date().toISOString(), error: null }); });
-      } catch (e) { this.store.update(s => { const r = s.repositories.find(x => x.id === repo.id); if (r) r.error = e.message.slice(0, 300); }); }
+        if (!this.disposed) this.store.saveCommits(repo.id, current, identity);
+      } catch (e) { if (!this.disposed) this.store.update(s => { const r = s.repositories.find(x => x.id === repo.id); if (r) r.error = e.message.slice(0, 300); }); }
     }
     return this.store.state.repositories;
   }
   async query({ repoId = '', query = '', date = '', page = 0, mineOnly = true } = {}) {
-    const all = [], term = String(query).toLowerCase().slice(0, 300);
-    for (const repo of this.store.state.repositories) {
-      if (repoId && repo.id !== repoId) continue;
-      for (const c of await this.records(repo)) {
-        if (mineOnly && !(repo.identity?.email ? c.email.toLowerCase() === repo.identity.email.toLowerCase() : repo.identity?.name && c.author === repo.identity.name)) continue;
-        const local = new Date(c.date), key = `${local.getFullYear()}-${String(local.getMonth() + 1).padStart(2, '0')}-${String(local.getDate()).padStart(2, '0')}`;
-        if (date && key !== date) continue;
-        if (term && ![c.message, c.author, c.email, c.hash, repo.name].some(x => x.toLowerCase().includes(term))) continue;
-        all.push({ ...c, repoId: repo.id, repository: repo.name });
-      }
-    }
-    all.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-    const start = Math.max(0, Math.floor(Number(page) || 0)) * 40;
-    return { total: all.length, rows: all.slice(start, start + 40) };
+    return this.store.database.queryCommits({ repoId, query, date, page, mineOnly });
   }
+  dispose() { this.disposed = true; }
 }
 module.exports = { GitIndex, discover, readCommits, disposeGit };

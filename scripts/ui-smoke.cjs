@@ -1,17 +1,18 @@
 const {_electron:electron}=require('playwright');
 const fs=require('node:fs/promises'),path=require('node:path'),assert=require('node:assert/strict');
 const {execFile}=require('node:child_process'),{promisify}=require('node:util'),exec=promisify(execFile);
-const {Store}=require('../src/core/store.cjs');
 const root=path.resolve(__dirname,'..');
 const dateKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 (async()=>{
- await fs.mkdir(path.join(root,'.cache'),{recursive:true});const folder=await fs.mkdtemp(path.join(root,'.cache/ui-v4-')),data=path.join(folder,'data'),repo=path.join(folder,'repo');await fs.mkdir(repo);const store=new Store(data);store.update(s=>s.settings.language='zh-CN');
+ await fs.mkdir(path.join(root,'.cache'),{recursive:true});const folder=await fs.mkdtemp(path.join(root,'.cache/ui-v4-')),data=path.join(folder,'data'),repo=path.join(folder,'repo');await fs.mkdir(repo);await fs.mkdir(data);
+ const legacy=JSON.stringify({version:1,settings:{language:'zh-CN'},notes:[],reminders:[],repositories:[],skins:[]});await fs.writeFile(path.join(data,'assistant.json'),legacy);
  for(const agent of ['codex','claude'])await fs.writeFile(path.join(data,`release-${agent}.json`),JSON.stringify({agent,version:'999.0.0',body:'Test release',url:`https://github.com/${agent==='codex'?'openai/codex':'anthropics/claude-code'}/releases/tag/v999.0.0`,publishedAt:'2026-10-10',checkedAt:Date.now()}));
  const git=(...args)=>exec('git',['-C',repo,...args],{windowsHide:true});await git('init','-b','main');await git('config','user.name','Local Author');await git('config','user.email','local@example.invalid');await git('commit','--allow-empty','-m','My local commit');await git('commit','--allow-empty','--author','Teammate <other@example.invalid>','-m','Another author');
  const env={...process.env,DESKMATE_DATA_DIR:data};delete env.ELECTRON_RUN_AS_NODE;let app;const errors=[];
  const launch=async()=>{app=await electron.launch({args:process.env.DESKMATE_TEST_EXE?[]:[root],executablePath:process.env.DESKMATE_TEST_EXE||undefined,env,timeout:30000});app.on('window',w=>w.on('pageerror',e=>errors.push(e.message)));for(let i=0;i<100;i++){const page=app.windows().find(w=>w.url().endsWith('/index.html'));if(page)return page;await new Promise(r=>setTimeout(r,100));}throw Error('No panel');};
  try{
  const page=await launch();await page.getByRole('heading',{name:'Agent 用量',exact:true}).waitFor();
+ assert.equal((await fs.readFile(path.join(data,'assistant.sqlite'))).subarray(0,16).toString(),'SQLite format 3\0');assert.equal(await fs.readFile(path.join(data,'assistant.json'),'utf8'),legacy);
  const pet=app.windows().find(w=>w.url().endsWith('/pet.html'));
  await page.locator('#language-select').selectOption('en');await page.getByRole('heading',{name:'Agent usage',exact:true}).waitFor();await pet.waitForFunction(()=>document.documentElement.lang==='en');
  await page.locator('#language-select').selectOption('ja');await page.getByRole('heading',{name:'Agent 使用量',exact:true}).waitFor();

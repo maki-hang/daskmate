@@ -2,13 +2,15 @@
 
 [中文](README.md) · [English](README.en.md) · **日本語**
 
+**0.6.0: Tauri 2 + Rust + WebView2 + SQLite。** HTML/CSS/JavaScript の画面は維持します。配布版に Node.js は不要です。[Rust 移行の詳細](docs/rust-migration.md)。
+
 AI 使用量、Git 履歴、メモ、リマインダーをまとめた Windows x64 用デスクトップペットです。表示する Agent はひとつ。Agent ごとに別のアニメーションを設定できます。
 
 ## 起動
 
-`release/DeskMate-0.5.0-win32-x64/DeskMate.exe` を実行してください。フォルダー内のファイルは一緒に保管してください。旧版が起動中の場合は、先にトレイの「デスクメイトを終了」を選びます。データフォルダーは共通で、既存のメモと通知は自動移行されます。
+`release/DeskMate-0.6.0-rust-win32-x64/DeskMate.exe` を実行してください。フォルダー内のファイルは一緒に保管してください。旧版が起動中の場合は、先にトレイの「デスクメイトを終了」を選びます。データフォルダーは共通で、既存のメモと通知は自動移行されます。
 
-ソースから実行する場合は Node.js 22.12+、npm、Git が必要です。
+ソース実行には Node.js 22.13+、npm、Git、Rust stable（1.90+）、C++ Build Tools、Windows SDK、WebView2 が必要です。
 
 ```powershell
 npm.cmd ci
@@ -100,37 +102,39 @@ Agent を選択し、設定でローカルの `skin.json` を読み込みます�
 
 ## Claude の残量連携（任意）
 
-Node.js を用意し、Claude Code 設定に次を追加します。パスは環境に合わせて変更してください。既存のステータスラインがある場合は上書きせず、スクリプトを連結してください。
+Claude Code 設定に追加し、実際のプログラムのパスを指定します。Rust 内蔵コマンドに Node.js は不要です。既存のステータスラインは保持して連結してください。
 
 ```json
 {
   "statusLine": {
     "type": "command",
-    "command": "node \"E:/brain-storming/deskmate/scripts/claude-statusline.cjs\""
+    "command": "\"C:/DeskMate/DeskMate.exe\" --claude-statusline"
   }
 }
 ```
 
-パッケージ版では `resources/claude-statusline.cjs` です。残量・リセット時刻・更新時刻のみ保存してステータスラインを出力し、認証情報の読み取りや追加の残量リクエストは行いません。双方で同じデータフォルダーを使用し、古いスナップショットは Claude を再使用して更新してください。
-
 ## Windows インストーラーの作成
 
-`E:\brain-storming\deskmate` で PowerShell を開きます。Windows x64、Node.js 22.12+、npm が必要です。初回は Electron と NSIS ツールをダウンロードします。
+`E:\brain-storming\deskmate` で PowerShell を開きます。ソース実行と同じ開発環境が必要です。初回は Rust 依存関係と NSIS ツールを取得します。
 
 ```powershell
 npm.cmd ci
 npm.cmd run dist
 ```
 
-出力は `release/installers/DeskMate-Setup-0.5.0-x64.exe`。`dist` は毎回現在のソースから作成するため、先に `package` を実行する必要はありません。中国語・英語・日本語に対応し、管理者権限不要のユーザー単位インストール、インストール先の選択、デスクトップとスタートメニューのショートカット作成が可能です。完了後に自動起動しません。Windows の「インストールされているアプリ」からアンインストールでき、ユーザーデータは保持されます。同じバージョンを再ビルドすると、そのインストーラーを更新します。
+出力は `src-tauri/target/release/bundle/nsis/`。`dist` は毎回現在のソースから作成するため、先に `package` を実行する必要はありません。中国語・英語・日本語に対応し、管理者権限不要のユーザー単位インストール、インストール先の選択、デスクトップとスタートメニューのショートカット作成が可能です。インストール後はショートカットから起動できます。Windows の「インストールされているアプリ」からアンインストールでき、ユーザーデータは保持されます。同じバージョンを再ビルドすると、そのインストーラーを更新します。
 
-ポータブル版のみ必要な場合は `npm.cmd run package` を実行します。出力先は `release/DeskMate-0.5.0-win32-x64/`。既存の出力先は上書きせず、再作成には別の `DESKMATE_BUILD_NAME` を指定できます。両版はデータを共有するため、切り替える前に起動中の版を終了してください。
+ポータブル版のみ必要な場合は `npm.cmd run package` を実行します。出力先は `release/DeskMate-0.6.0-rust-win32-x64/`。既存の出力先は上書きせず、再作成には別の `DESKMATE_BUILD_NAME` を指定できます。両版はデータを共有するため、切り替える前に起動中の版を終了してください。
 
-設定は `electron-builder.cjs`、処理は `scripts/installer.cjs`、オリジナルのアイコン生成は `scripts/icon.cjs`。バージョンは `package.json` に従います。electron-builder の NSIS を使用し、自動公開はしません。未署名のため Windows に不明な発行元と表示される場合があります。公開配布の前に署名を別途設定できます。内蔵素材の CC BY-NC 4.0 非商用条件はインストーラーにも適用されます。
+設定は `src-tauri/tauri.conf.json` と `src-tauri/Cargo.toml`。Tauri の NSIS を使用し、`scripts/package-rust.cjs` が EXE と素材を含むポータブル版を生成します。バージョンは 0.6.0。自動公開せず、署名と素材の非商用ライセンス条件を引き続き適用します。
 
 ## データ・開発・検証
 
-新規ユーザーの保存先は `%APPDATA%/DeskMate/`。新しいフォルダーにデータがなく、旧版の `%APPDATA%/Longling PC Assistant/assistant.json` が存在する場合は、移動・削除せず旧フォルダーを引き続き使用します。`DESKMATE_DATA_DIR` を優先し、旧変数 `LONGLING_DATA_DIR` も利用できます。`assistant.json` はメモ・通知・設定、`.bak` は直前の復元用コピーです。`git-*.json` はコミット索引、`skins/` は追加素材、`release-*.json` は更新情報です。バックアップは終了後にフォルダー全体をコピーします。`DESKMATE_DATA_DIR` で保存先を分離できます。
+新規ユーザーの保存先は `%APPDATA%/DeskMate/`。新しいフォルダーにデータがなく、旧版の `%APPDATA%/Longling PC Assistant/` に `assistant.sqlite`、`assistant.json` または JSON のバックアップがある場合は、移動・削除せず旧フォルダーを使用します。`DESKMATE_DATA_DIR` を優先し、旧変数 `LONGLING_DATA_DIR` も利用できます。
+
+メモ・通知・設定・リポジトリ・キャラクターの割り当て・コミット索引は **SQLite の `assistant.sqlite`** に保存します。初回は `assistant.json` とすべての `git-*.json`（削除済みリポジトリのアーカイブを含む）を単一トランザクションで取り込みます。失敗時は全体をロールバックし、元ファイルの修復後に再試行できます。旧 JSON と `.bak` は変更せず移行前のコピーとして保持し、成功後は読み書きしません。旧 JSON が破損している場合は有効な `.bak` から取り込み、復元の通知を表示します。
+
+起動成功時と正常終了時に一貫した `assistant.sqlite.bak` を作成します。DB 破損時は検証済みのコピーから復元し、破損ファイルを `.damaged-*` として保持します。コピーは最新の編集より古い場合がありますが、通常の保存は SQLite トランザクションで保護します。`skins/`、`skin.json`、再取得可能な `release-*.json` はファイルのままです。バックアップは終了後にフォルダー全体をコピーしてください。移行後の変更は旧版の JSON へ同期しません。[移行の詳細](docs/database-migration.md)。
 
 ```powershell
 npm.cmd test
@@ -140,6 +144,6 @@ npm.cmd run test:pet    # ペット表示・操作・設定の保持
 npm.cmd run package
 ```
 
-公式 Electron ランタイムと ASAR で配布し、既存の出力先は上書きしません。署名なしの Windows x64 ポータブル版です。画面はサンドボックス・コンテキスト分離・制限付き IPC を使用します。通知は重複防止のため先に保存し、直後にクラッシュした場合は未読一覧から確認できます。メモと Git 履歴はアップロードしません。
+配布版は Rust とシステムの WebView2 を使用します。ポータブル版はフォルダー全体と WebView2 が必要で、NSIS には WebView2 導入処理を含みます。既存の出力先を保護し、画面からは制限された Tauri コマンドを使用します。
 
-`src/` はアプリ、`assets/` は素材とライセンス、`scripts/` はビルド・連携、`test/` は検証です。過去の調査は `docs/existing-projects.md` にあります。他の Windows PC、大規模リポジトリ、すべての時差・通知設定は検証していません。
+`src-tauri/` は Rust バックエンド、`src/renderer/` は画面、`assets/` は素材とライセンス、`scripts/` はビルド・連携、`test/` は検証です。過去の調査は `docs/existing-projects.md` にあります。他の Windows PC、大規模リポジトリ、すべての時差・通知設定は検証していません。

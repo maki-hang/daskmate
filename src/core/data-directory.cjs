@@ -7,6 +7,7 @@ function dataDirectory(appData, env = process.env) {
   if (custom) return path.resolve(custom);
   const current = path.join(appData, 'DeskMate');
   const legacy = path.join(appData, 'Longling PC Assistant');
-  return !fs.existsSync(path.join(current, 'assistant.json')) && fs.existsSync(path.join(legacy, 'assistant.json')) ? legacy : current;
+  const hasData = directory => ['assistant.sqlite', 'assistant.sqlite.bak', 'assistant.json', 'assistant.json.bak'].some(file => fs.existsSync(path.join(directory, file)));
+  return !hasData(current) && hasData(legacy) ? legacy : current;
 }
 module.exports = { dataDirectory };

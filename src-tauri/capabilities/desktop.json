@@ -1,0 +1,6 @@
+{
+  "identifier": "desktop",
+  "description": "Local DeskMate pages can subscribe to backend events. Business actions are validated in Rust.",
+  "windows": ["panel", "pet"],
+  "permissions": ["core:event:allow-listen", "core:event:allow-unlisten"]
+}
